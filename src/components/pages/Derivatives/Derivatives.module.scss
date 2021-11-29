@@ -7,7 +7,6 @@ body {
 
 input[type="file"] {
   display: none;
-  border: 3px solid black;
 }
 
 .outerContainer {
@@ -32,13 +31,61 @@ input[type="file"] {
   justify-content: center;
 
   &__button {
-    width: 300px;
+    width: 340px;
     height: 300px;
-    margin-right: 30px;
+
+    &:not(:last-child) {
+      margin-right: 30px;
+    }
   }
 
   &__label {
     cursor: pointer;
+  }
+}
+
+.processContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__button {
+    width: 300px;
+    height: 100px;
+  }
+
+  &__report {
+    margin-top: 70px;
+
+    &--green {
+      font-size: 2rem;
+      margin-left: 100px;
+      color: #238823;
+
+      &:not(:last-child) {
+        margin-bottom: 50px;
+      }
+    }
+
+    &--orenge {
+      font-size: 2rem;
+      margin-left: 100px;
+      color: #ffbf00;
+
+      &:not(:last-child) {
+        margin-bottom: 50px;
+      }
+    }
+
+    &--red {
+      font-size: 2rem;
+      margin-left: 100px;
+      color: #d2222d;
+
+      &:not(:last-child) {
+        margin-bottom: 50px;
+      }
+    }
   }
 }
 

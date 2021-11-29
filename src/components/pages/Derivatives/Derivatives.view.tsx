@@ -4,7 +4,7 @@ import icons from "../../../assets/icons";
 
 import Svg from "../../ui/Svg/Svg";
 
-import { 
+import {
   ThemeProvider,
   Tooltip,
   Modal,
@@ -13,12 +13,10 @@ import {
   makeStyles,
   Theme,
 } from "@material-ui/core";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import { BaseCSSProperties } from "@material-ui/styles";
 
-
 import { IHistory } from "../../../models/history";
-
 
 import classes from "./Derivatives.module.scss";
 
@@ -39,44 +37,53 @@ interface Props {
 }
 
 const TableView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
-
   return (
-      <div className={classes['outerContainer']}>
-        <h1 className={classes['outerContainer__title']}>Derivatives</h1>
-        <div className={classes['buttonContainer']}>
-          <Button className={classes['buttonContainer__button']} variant="contained" color="success">
-            <label className={classes['buttonContainer__label']}>
-            <input 
-              type='file'
-              accept='.csv'
-              onChange={props.onUpload}
-            />
-            <Svg
-              name='plus'
-              className={classes['svg']} 
-            /> 
+    <div className={classes["outerContainer"]}>
+      <h1 className={classes["outerContainer__title"]}>Derivatives</h1>
+      <div className={classes["buttonContainer"]}>
+        <Button
+          className={classes["buttonContainer__button"]}
+          variant="contained"
+          color="success"
+        >
+          <label className={classes["buttonContainer__label"]}>
+            <input type="file" accept=".csv" onChange={props.onUpload} />
+            <Svg name="plus" className={classes["svg"]} />
             <h1>WEX</h1>
-            </label>
-          </Button>
-          <Button className={classes['buttonContainer__button']} variant="contained" color="success">
-            <label className={classes['buttonContainer__label']}>
-              <input 
-                type='file'
-                accept='.csv'
-                onChange={props.onUpload}
-              />
-              <Svg
-                name='plus'
-                className={classes['svg']} 
-              /> 
-              <h1>DRV</h1>
-            </label>
-          </Button>
-        </div>
-        <div className={classes['processContainer']}>
-          
+          </label>
+        </Button>
+        <Button
+          className={classes["buttonContainer__button"]}
+          variant="contained"
+          color="success"
+        >
+          <label className={classes["buttonContainer__label"]}>
+            <input type="file" accept=".csv" onChange={props.onUpload} />
+            <Svg name="plus" className={classes["svg"]} />
+            <h1>DRV</h1>
+          </label>
+        </Button>
+      </div>
+      <div className={classes["processContainer"]}>
+        <Button
+          className={classes["processContainer__button"]}
+          variant="contained"
+        >
+          PROCESS
+        </Button>
+        <div className={classes["processContainer__report"]}>
+          <li className={classes["processContainer__report--green"]}>
+            Something
+          </li>
+          <li className={classes["processContainer__report--orenge"]}>
+            Something
+          </li>
+          <li className={classes["processContainer__report--red"]}>
+            Something
+          </li>
         </div>
       </div>
+    </div>
   );
 };
 
