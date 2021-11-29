@@ -1,0 +1,51 @@
+@import "../../../styles/variables.scss";
+
+body {
+  padding: map-get($sizes, minimal-padding);
+  background-color: map-get($colors, primary);
+}
+
+input[type="file"] {
+  display: none;
+  border: 3px solid black;
+}
+
+.outerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 5rem;
+    font-weight: 600;
+    color: map-get($colors, title);
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__button {
+    width: 300px;
+    height: 300px;
+    margin-right: 30px;
+  }
+
+  &__label {
+    cursor: pointer;
+  }
+}
+
+.svg {
+  align-self: center;
+  width: 15vh;
+  height: 15vh;
+  filter: invert(49%) sepia(14%) saturate(1529%) hue-rotate(71deg)
+    brightness(98%) contrast(93%);
+}

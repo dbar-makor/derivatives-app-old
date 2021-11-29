@@ -1,17 +1,16 @@
-import React from 'react';
 import { configure, shallow, ShallowWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import App from './App';
+import Derivatives from './Derivatives';
 
 configure({ adapter: new Adapter() });
 
-describe('<App>', () => {
+describe('<Derivatives>', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
     wrapper = shallow(
-      <App></App>
+      <Derivatives></Derivatives>
     );
   });
 
