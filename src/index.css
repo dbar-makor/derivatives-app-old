@@ -13,27 +13,34 @@ code {
 }
 
 .css-ke5b6m-MuiButtonBase-root-MuiButton-root {
-  border: 2px solid #000 !important;
   border-radius: 30px !important;
+  width: 300px !important;
+  height: 300px !important;
+}
+
+.css-ke5b6m-MuiButtonBase-root-MuiButton-root:not(:last-child) {
+  margin-right: 30px;
 }
 
 .css-kjirbw-MuiButtonBase-root-MuiButton-root {
-  border: 2px solid #000 !important;
   border-radius: 30px !important;
 }
 
 .css-1sim9df-MuiButtonBase-root-MuiButton-root {
-  border: 2px solid #000 !important;
   border-radius: 30px !important;
 }
 
 .css-1sszw6i-MuiButtonBase-root-MuiButton-root {
-  border: 2px solid #000 !important;
   border-radius: 30px !important;
+  width: 300px !important;
+  height: 300px !important;
+}
+
+.css-1sszw6i-MuiButtonBase-root-MuiButton-root {
+  margin-right: 30px !important;
 }
 
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
-  border: 2px solid #fff !important;
   border-radius: 20px !important;
   margin-top: 50px !important;
   font-size: 2.3rem !important;

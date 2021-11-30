@@ -33,21 +33,42 @@ const Derivatives: React.FC<Props> = (
     useState<boolean>(false);
 
   const [processState, setProcessState] = useState<boolean>(false); // need to set process UI
+
   const [processErrorResponseState, setProcessErrorRsponseState] =
     useState<boolean>(false);
   const [processSuccessResponseState, setProcessSuccessRsponseState] =
     useState<boolean>(false);
 
+  const [CSVFilesState, setCSVFilesState] = useState<
+    { file_id: string; uploaded_file: string | ArrayBuffer | null }[]
+  >([]);
+
+  const onSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+  };
+
   const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const CVSFile = new FormData();
-    CVSFile.append("file", event.target.files![0]);
+    event.preventDefault();
+
+    let id = event.target.id;
+    let fileReader = new FileReader();
+    let file = event.target.files![0];
+
+    fileReader.onload = () => {
+      setCSVFilesState([
+        ...CSVFilesState,
+        { file_id: id, uploaded_file: fileReader.result },
+      ]);
+    };
+
+    fileReader.readAsDataURL(file);
 
     setWEXSpinnerLoaderState(() => true);
     setDVRSpinnerLoaderState(() => true);
 
     backendAPIAxios
       .post("/", {
-        files: CVSFile,
+        files: fileReader,
       })
       .then((response: AxiosResponse<IUploadCSVResponse>) => {
         if (!response.data) {
@@ -75,28 +96,11 @@ const Derivatives: React.FC<Props> = (
       });
   };
 
-  const onUploadWEX = (event: ChangeEvent<HTMLInputElement>) => {
-    const WEXFile = new FormData();
-    WEXFile.append("file", event.target.files![0]);
-
-    console.log(event.target.files![0]);
-  };
-
-  const onUploadDVR = (event: ChangeEvent<HTMLInputElement>) => {
-    const DVRFile = new FormData();
-    DVRFile.append("file", event.target.files![0]);
-
-    console.log(event.target.files![0]);
-  };
-
-  const onUploadToServer = (event: ChangeEvent<HTMLInputElement>) => {};
-
   return (
     <DerivativesView
       iconName={props.iconName}
-      onUploadWEX={onUploadWEX}
-      onUploadDVR={onUploadDVR}
-      onUploadToServer={onUploadToServer}
+      onUpload={onUpload}
+      onSubmit={onSubmit}
       checkServerResponseUploadState={checkServerResponseUploadState}
       WEXSpinnerLoaderState={WEXSpinnerLoaderState}
       WEXErrorResponseState={WEXErrorResponseState}
