@@ -54,6 +54,20 @@ input[type="file"] {
     height: 100px;
   }
 
+  &__error {
+    padding: 15px;
+    margin-top: 60px;
+    max-width: 300px;
+    font-size: 2rem;
+    color: #fff;
+    border: 3px solid #000;
+    background-color: #d2222d;
+  }
+
+  &__linearProgress {
+    margin-bottom: 20px;
+  }
+
   &__report {
     margin-top: 70px;
 
@@ -81,18 +95,31 @@ input[type="file"] {
       font-size: 2rem;
       margin-left: 100px;
       color: #d2222d;
-
-      &:not(:last-child) {
-        margin-bottom: 50px;
-      }
     }
   }
 }
 
-.svg {
+.plusSvg {
   align-self: center;
   width: 15vh;
   height: 15vh;
+  filter: invert(49%) sepia(14%) saturate(1529%) hue-rotate(71deg)
+    brightness(98%) contrast(93%);
+}
+
+.errorSvg {
+  align-self: center;
+  width: 14vh;
+  height: 14vh;
+  filter: invert(55%) sepia(32%) saturate(7339%) hue-rotate(332deg)
+    brightness(104%) contrast(93%);
+}
+
+.checkMarkSvg {
+  align-self: center;
+  width: 17vh;
+  height: 17vh;
+  margin-left: 15px;
   filter: invert(49%) sepia(14%) saturate(1529%) hue-rotate(71deg)
     brightness(98%) contrast(93%);
 }
