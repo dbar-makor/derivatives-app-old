@@ -4,8 +4,6 @@ import { AxiosResponse, AxiosError } from "axios";
 
 import { backendAPIAxios } from "../../../utils/http";
 
-import { IHistory } from "../../../models/history";
-
 import { IUploadCSVResponse } from "../../../models/response/response";
 
 import icons from "../../../assets/icons";
@@ -40,12 +38,11 @@ const Derivatives: React.FC<Props> = (
     useState<boolean>(false);
 
   const [CSVFilesState, setCSVFilesState] = useState<
-    { file_id: string; uploaded_file: string | ArrayBuffer | null }[]
+    { id: string; file: string | ArrayBuffer | null }[]
   >([]);
 
-  const onSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-  };
+  const [processEnabledState, setProcessEnabledState] =
+    useState<boolean>(false);
 
   const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -55,25 +52,26 @@ const Derivatives: React.FC<Props> = (
     let file = event.target.files![0];
 
     fileReader.onload = () => {
-      setCSVFilesState([
-        ...CSVFilesState,
-        { file_id: id, uploaded_file: fileReader.result },
-      ]);
+      setCSVFilesState([...CSVFilesState, { id, file: fileReader.result }]);
     };
 
     fileReader.readAsDataURL(file);
+  };
 
-    setWEXSpinnerLoaderState(() => true);
-    setDVRSpinnerLoaderState(() => true);
+  const onSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    console.log(CSVFilesState);
 
     backendAPIAxios
-      .post("/", {
-        files: fileReader,
-      })
+      .post("/", CSVFilesState)
       .then((response: AxiosResponse<IUploadCSVResponse>) => {
-        if (!response.data) {
-          return alert("Failed to upload CSV");
-        }
+        // if (!response.data) {
+        //   return alert("Failed to upload CSV");
+        // }
+
+        setWEXSpinnerLoaderState(() => true);
+        setDVRSpinnerLoaderState(() => true);
 
         if (response.data) {
           setDVRErrorRsponseState(() => true); // need to manage by server response
@@ -88,7 +86,7 @@ const Derivatives: React.FC<Props> = (
         }
       })
       .catch((e: AxiosError) => {
-        alert(`Failed to upload CSV with error: ${e}`);
+        // alert(`Failed to upload CSV with error: ${e}`);
       })
       .finally(() => {
         setWEXSpinnerLoaderState(() => false);
@@ -96,11 +94,20 @@ const Derivatives: React.FC<Props> = (
       });
   };
 
+  useEffect(() => {
+    if (CSVFilesState.length === 0) {
+      setProcessEnabledState(false);
+    }
+
+    setProcessEnabledState(true);
+  }, [CSVFilesState]);
+
   return (
     <DerivativesView
       iconName={props.iconName}
       onUpload={onUpload}
       onSubmit={onSubmit}
+      processEnabledState={processEnabledState}
       checkServerResponseUploadState={checkServerResponseUploadState}
       WEXSpinnerLoaderState={WEXSpinnerLoaderState}
       WEXErrorResponseState={WEXErrorResponseState}
