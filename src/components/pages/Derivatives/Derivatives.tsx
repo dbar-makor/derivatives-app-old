@@ -20,9 +20,9 @@ const Derivatives: React.FC<Props> = (
   const [checkServerResponseUploadState, setServerResponseUploadState] =
     useState<boolean>(false);
 
-  const [DVRSpinnerLoaderState, setDVRSpinnerLoaderState] =
+  const [DRVSpinnerLoaderState, setDRVSpinnerLoaderState] =
     useState<boolean>(false);
-  const [DVRErrorResponseState, setDVRErrorRsponseState] =
+  const [DRVErrorResponseState, setDRVErrorRsponseState] =
     useState<boolean>(false);
 
   const [WEXSpinnerLoaderState, setWEXSpinnerLoaderState] =
@@ -71,10 +71,10 @@ const Derivatives: React.FC<Props> = (
         // }
 
         setWEXSpinnerLoaderState(() => true);
-        setDVRSpinnerLoaderState(() => true);
+        setDRVSpinnerLoaderState(() => true);
 
         if (response.data) {
-          setDVRErrorRsponseState(() => true); // need to manage by server response
+          setDRVErrorRsponseState(() => true); // need to manage by server response
         }
 
         if (response.data) {
@@ -90,7 +90,7 @@ const Derivatives: React.FC<Props> = (
       })
       .finally(() => {
         setWEXSpinnerLoaderState(() => false);
-        setDVRSpinnerLoaderState(() => false);
+        setDRVSpinnerLoaderState(() => false);
       });
   };
 
@@ -111,8 +111,8 @@ const Derivatives: React.FC<Props> = (
       checkServerResponseUploadState={checkServerResponseUploadState}
       WEXSpinnerLoaderState={WEXSpinnerLoaderState}
       WEXErrorResponseState={WEXErrorResponseState}
-      DVRSpinnerLoaderState={DVRSpinnerLoaderState}
-      DVRErrorResponseState={DVRErrorResponseState}
+      DRVSpinnerLoaderState={DRVSpinnerLoaderState}
+      DRVErrorResponseState={DRVErrorResponseState}
       processState={processState}
       processErrorResponseState={processErrorResponseState}
       processSuccessResponseState={processSuccessResponseState}

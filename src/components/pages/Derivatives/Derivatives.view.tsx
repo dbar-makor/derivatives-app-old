@@ -18,8 +18,8 @@ interface Props {
   readonly checkServerResponseUploadState: boolean;
   readonly WEXSpinnerLoaderState: boolean;
   readonly WEXErrorResponseState: boolean;
-  readonly DVRSpinnerLoaderState: boolean;
-  readonly DVRErrorResponseState: boolean;
+  readonly DRVSpinnerLoaderState: boolean;
+  readonly DRVErrorResponseState: boolean;
   readonly processState: boolean;
   readonly processErrorResponseState: boolean;
   readonly processSuccessResponseState: boolean;
@@ -67,7 +67,7 @@ const DerivativesView: React.FC<Props> = (
             variant="contained"
             color="success"
           >
-            {!props.DVRSpinnerLoaderState ? (
+            {!props.DRVSpinnerLoaderState ? (
               <label className={classes["buttonContainer__label"]}>
                 {!props.checkServerResponseUploadState ? (
                   <span>
@@ -75,15 +75,15 @@ const DerivativesView: React.FC<Props> = (
                       type="file"
                       accept=".csv"
                       onChange={props.onUpload}
-                      id={"DVR"}
+                      id={"DRV"}
                     />
                     <Svg name="plus" className={classes["plusSvg"]} />
-                    <h1>DVR</h1>
+                    <h1>DRV</h1>
                   </span>
                 ) : (
                   <span>
                     <Svg name="checkMark" className={classes["checkMarkSvg"]} />
-                    <h1>DVR UPLOADED</h1>
+                    <h1>DRV UPLOADED</h1>
                   </span>
                 )}
               </label>
