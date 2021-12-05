@@ -1,64 +1,103 @@
 const icons = {
-  checkMark: [
-    "17.837 17.837",
+  complete: [
+    "24.875 24.875",
     `
-    <svg
+     <svg
       xmlns="http://www.w3.org/2000/svg"
-      x="0"
-      y="0"
-      enableBackground="new 0 0 17.837 17.837"
-      version="1.1"
-      viewBox="0 0 17.837 17.837"
-      xmlSpace="preserve"
+      width="24.875"
+      height="24.875"
+      viewBox="0 0 24.875 24.875"
     >
       <path
-        fill="#030104"
-        d="M16.145 2.571a.7.7 0 00-.99 0L6.92 10.804l-4.241-4.27a.698.698 0 00-.989 0L.204 8.019a.703.703 0 000 .99l6.217 6.258a.704.704 0 00.99 0L17.63 5.047a.7.7 0 000-.994l-1.485-1.482z"
+        fill="#238d38"
+        d="M15.812 3.375A12.438 12.438 0 1028.25 15.812 12.436 12.436 0 0015.812 3.375zm6.368 9L14.186 20.4h-.006a1.08 1.08 0 01-.694.329 1.047 1.047 0 01-.7-.341l-3.348-3.344a.238.238 0 010-.341l1.062-1.064a.231.231 0 01.335 0l2.655 2.655 7.3-7.349a.236.236 0 01.167-.072.217.217 0 01.167.072l1.046 1.082a.236.236 0 01.011.347z"
+        transform="translate(-3.375 -3.375)"
       ></path>
     </svg>
     `,
   ],
-  error: [
-    "256 256",
+  attach: [
+    "12 20",
     `
-    <svg
+     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="256"
-      height="256"
-      viewBox="0 0 256 256"
+      width="12"
+      height="20"
+      viewBox="0 0 12 20"
+    >
+      <path
+        fill="#3e2f71"
+        d="M20.864 6.045V16.5c0 2.009-1.953 3.636-4.364 3.636s-4.364-1.627-4.364-3.636V5.136a2.532 2.532 0 012.727-2.273 2.532 2.532 0 012.727 2.273v9.545a1.109 1.109 0 01-2.182 0V6.045h-1.635v8.636a2.532 2.532 0 002.727 2.274 2.532 2.532 0 002.727-2.273V5.136c0-2.009-1.953-3.636-4.364-3.636S10.5 3.127 10.5 5.136V16.5c0 2.764 2.684 5 6 5s6-2.236 6-5V6.045z"
+        data-name="attach icon"
+        transform="translate(-10.5 -1.5)"
+      ></path>
+    </svg>
+    `,
+  ],
+  addFile: [
+    "42.6 53",
+    `
+     <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="42.6"
+      height="53"
+      viewBox="0 0 42.6 53"
     >
       <g
-        fill="#000"
-        strokeMiterlimit="10"
-        strokeWidth="0"
-        transform="matrix(.72 0 0 .72 128 128) matrix(3.89 0 0 3.89 -175.05 -175.05)"
+        fill="none"
+        stroke="#3e2f71"
+        strokeWidth="1"
+        data-name="file add"
+        transform="translate(-754.7 -327.5)"
       >
-        <rect
-          width="111.33"
-          height="15.95"
-          x="-10.67"
-          y="37.03"
-          rx="0"
-          ry="0"
-          transform="rotate(-45.001 44.996 45)"
-        ></rect>
-        <rect
-          width="15.95"
-          height="111.33"
-          x="37.03"
-          y="-10.67"
-          rx="0"
-          ry="0"
-          transform="rotate(-45.001 45 45)"
-        ></rect>
+        <g data-name="Group 45" transform="translate(767.448 345.448)">
+          <path d="M8.552 0v17.1" data-name="Path 7"></path>
+          <path d="M17.104 8.551H.004" data-name="Path 8"></path>
+        </g>
+        <g
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          data-name="Icon feather-file"
+          transform="translate(749.2 325)"
+        >
+          <path
+            d="M36.513 3H11.2A5.2 5.2 0 006 8.2v41.6a5.2 5.2 0 005.2 5.2h31.2a5.2 5.2 0 005.2-5.2V14.953z"
+            data-name="Path 14"
+          ></path>
+          <path d="M35.647 3v11.953H47.6" data-name="Path 15"></path>
+        </g>
       </g>
     </svg>
     `,
   ],
-  plus: [
-    "24 24",
+  fileUploaded: [
+    "42.6 53",
     `
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg>
+     <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="43.414"
+      height="54.263"
+      viewBox="0 0 43.414 54.263"
+    >
+      <g
+        fill="none"
+        stroke="#3e2f71"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        data-name="file upoaded"
+        transform="translate(-2 -3.5)"
+      >
+        <path
+          d="M18.13 24.662l5.97 5.97 10.2-10.2 9.7-9.7"
+          data-name="Path 18"
+        ></path>
+        <path
+          d="M44 30.632v20.324c0 3.207-2.04 5.807-4.556 5.807H7.556C5.04 56.763 3 54.163 3 50.956V10.307C3 7.1 5.04 4.5 7.556 4.5h25.055"
+          data-name="Path 19"
+        ></path>
+      </g>
+    </svg>
     `,
   ],
 };

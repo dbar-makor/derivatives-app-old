@@ -1,10 +1,9 @@
 import React, { Suspense } from "react";
 import { Route, BrowserRouter } from "react-router-dom";
 
-import Nav from "./components/ui/Nav/Nav";
-
+const Login = React.lazy(() => import("./components/pages/Login/Login"));
 const Derivatives = React.lazy(
-  () => import("./components/pages/Derivatives/Derivatives"),
+  () => import("./components/pages/Derivatives/Derivatives")
 );
 
 interface Props {}
@@ -12,8 +11,8 @@ interface Props {}
 const AppView: React.FC<Props> = (props: React.PropsWithChildren<Props>) => (
   <BrowserRouter>
     <Suspense fallback={null}>
-      <Nav />
-      <Route path="/" component={Derivatives} />
+      <Route path="/login" component={Login} />
+      <Route path="/derivatives" component={Derivatives} />
     </Suspense>
   </BrowserRouter>
 );

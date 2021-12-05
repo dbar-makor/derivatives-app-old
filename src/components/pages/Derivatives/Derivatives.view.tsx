@@ -1,38 +1,187 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, ReactElement } from "react";
 
 import icons from "../../../assets/icons";
 
+import HistoryTable from "../../ui/Table/HistoryTable";
 import Svg from "../../ui/Svg/Svg";
 
-import { CircularProgress } from "@material-ui/core";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import LinearProgress from "@mui/material/LinearProgress";
+import Modal from "@mui/material/Modal";
 
 import classes from "./Derivatives.module.scss";
 
 interface Props {
   readonly iconName?: keyof typeof icons;
-  readonly onUpload: (value: ChangeEvent<HTMLInputElement>) => void;
-  readonly onSubmit: (event: React.FormEvent) => void;
-  readonly processEnabledState: boolean;
-  readonly checkServerResponseUploadState: boolean;
-  readonly WEXSpinnerLoaderState: boolean;
-  readonly WEXErrorResponseState: boolean;
-  readonly DRVSpinnerLoaderState: boolean;
-  readonly DRVErrorResponseState: boolean;
-  readonly processState: boolean;
-  readonly processErrorResponseState: boolean;
-  readonly processSuccessResponseState: boolean;
+  readonly openModalState: boolean;
+  readonly handleModalOpen: () => void;
+  readonly handleModalClose: () => void;
 }
 
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 780,
+  height: 900,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
+
 const DerivativesView: React.FC<Props> = (
-  props: React.PropsWithChildren<Props>,
+  props: React.PropsWithChildren<Props>
 ) => {
   return (
     <div className={classes["container"]}>
-      <div className={classes["headers"]}>
-        <div className={classes["headers__text"]}></div>
-      </div>
+      <nav className={classes["nav"]}>
+        <div className={classes["innerNav"]}>
+          <span className={classes["navLink"]}>History</span>
+          <Button
+            className={classes["navLinkButton"]}
+            onClick={props.handleModalOpen}
+          >
+            NEW RECONCILIATION
+          </Button>
+        </div>
+      </nav>
+      <HistoryTable />
+      <Modal open={props.openModalState} onClose={props.handleModalClose}>
+        <Box sx={style}>
+          <span className={classes["modalHeader"]}>
+            Derivatives reconciliation
+          </span>
+          <div className={classes["uploadFilesContainer"]}>
+            <div className={classes["uploadFilesContainer__headers"]}>
+              <span
+                className={classes["uploadFilesContainer__headers--header"]}
+              >
+                1. Upload Files
+              </span>
+              <span
+                className={classes["uploadFilesContainer__headers--content"]}
+              >
+                After uploading files proccessing will start automaticaly
+              </span>
+            </div>
+            <div className={classes["uploadFilesContainer__buttons"]}>
+              <div className={classes["buttonContainer"]}>
+                <Button className={classes["buttonContainer__button"]}>
+                  <Svg className={classes["addFileSvg"]} name="addFile" />
+                  <span>
+                    <input type="file" accept=".csv" id={"WEX"} />
+                  </span>
+                </Button>
+                <span className={classes["buttonContainer__text"]}>WEX</span>
+              </div>
+              <div className={classes["buttonContainer"]}>
+                <Button className={classes["buttonContainer__button"]}>
+                  <Svg className={classes["addFileSvg"]} name="addFile" />
+                  <span>
+                    <input type="file" accept=".csv" id={"WEX"} />
+                  </span>
+                </Button>
+                <span className={classes["buttonContainer__text"]}>DRV</span>
+              </div>
+            </div>
+          </div>
+          <div className={classes["derivativesContainer"]}>
+            <div className={classes["derivativesContainer__headers"]}>
+              <span
+                className={classes["derivativesContainer__headers--header"]}
+              >
+                2. Derivatives
+              </span>
+              <span
+                className={classes["derivativesContainer__headers--content"]}
+              >
+                Unresolved is summary of Unmatched rows and Unknown errors
+              </span>
+            </div>
+            <div className={classes["derivativesTableContainer"]}>
+              <div className={classes["derivativesTableContainer__table"]}>
+                <div className={classes["derivativesTableContainer__text"]}>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__text--matchedRows"]
+                    }
+                  >
+                    Matched Rows
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__text--unmatchedRows"]
+                    }
+                  >
+                    Unmatched Rows
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__text--unknownErrors"]
+                    }
+                  >
+                    Unknown Errors
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__text--unresolved"]
+                    }
+                  >
+                    Unresolved
+                  </div>
+                </div>
+                <div className={classes["derivativesTableContainer__data"]}>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__data--number"]
+                    }
+                  >
+                    250
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__data--number"]
+                    }
+                  >
+                    50
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__data--number"]
+                    }
+                  >
+                    10
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__data--number"]
+                    }
+                  >
+                    60
+                  </div>
+                </div>
+              </div>
+              <div className={classes["derivativesTableContainer__calculator"]}>
+                <div
+                  className={
+                    classes["derivativesTableContainer__calculator--text"]
+                  }
+                >
+                  Complete
+                </div>
+                <div
+                  className={
+                    classes["derivativesTableContainer__calculator--percentage"]
+                  }
+                >
+                  70%
+                </div>
+              </div>
+            </div>
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 };
