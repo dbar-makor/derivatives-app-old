@@ -100,6 +100,33 @@ const icons = {
     </svg>
     `,
   ],
+  download: [
+    "23 21",
+    `
+     <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="23"
+      height="21"
+      viewBox="0 0 23 21"
+    >
+      <g
+        fill="none"
+        stroke="#3e2f71"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1"
+        transform="translate(.5 .5)"
+      >
+        <path
+          d="M22 13.667v4.222A2.3 2.3 0 0119.556 20H2.444A2.3 2.3 0 010 17.889v-4.222"
+          data-name="Path 11"
+        ></path>
+        <path d="M4.904 7.927l6.1 5.278 6.092-5.278" data-name="Path 12"></path>
+        <path d="M11 12.667V0" data-name="Path 13"></path>
+      </g>
+    </svg>
+    `,
+  ],
 };
 
 export default icons;

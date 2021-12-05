@@ -31,7 +31,7 @@ const style = {
 };
 
 const DerivativesView: React.FC<Props> = (
-  props: React.PropsWithChildren<Props>
+  props: React.PropsWithChildren<Props>,
 ) => {
   return (
     <div className={classes["container"]}>
@@ -155,7 +155,9 @@ const DerivativesView: React.FC<Props> = (
                   </div>
                   <div
                     className={
-                      classes["derivativesTableContainer__data--number"]
+                      classes[
+                        "derivativesTableContainer__data--unresolvedNumber"
+                      ]
                     }
                   >
                     60
@@ -178,6 +180,30 @@ const DerivativesView: React.FC<Props> = (
                   70%
                 </div>
               </div>
+            </div>
+          </div>
+          <div className={classes["downloadFileContainer"]}>
+            <div className={classes["downloadFileContainer__headers"]}>
+              <span
+                className={classes["downloadFileContainer__headers--header"]}
+              >
+                3. Download File
+              </span>
+              <span
+                className={classes["downloadFileContainer__headers--content"]}
+              >
+                File with Unresolved Derivatives is attached here
+              </span>
+            </div>
+            <div className={classes["downloadFileContainer__box"]}>
+              <Svg name="attach" />
+              <span className={classes["downloadFileContainer__box--text"]}>
+                unresoled.drv
+              </span>
+              <Svg
+                className={classes["downloadFileContainer__box--download"]}
+                name="download"
+              />
             </div>
           </div>
         </Box>

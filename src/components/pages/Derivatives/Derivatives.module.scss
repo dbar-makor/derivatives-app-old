@@ -29,8 +29,8 @@ body {
 
   .navLinkButton {
     transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
-    padding: 12px 27px 12px 32px;
-    font-size: 1.5rem;
+    padding: 12px 27px 12px 30px;
+    font-size: 1.4rem;
     cursor: pointer;
     border: 2px solid #fcfcfc;
     color: #fcfcfc;
@@ -144,11 +144,12 @@ input[type="file"] {
 
 .derivativesTableContainer {
   display: flex;
+  margin-bottom: 41px;
 
   &__table {
     display: flex;
     justify-content: space-between;
-    width: 580px;
+    width: 575px;
     height: 198px;
     margin-top: 24px;
     border: 1px solid #8a8a8a;
@@ -157,30 +158,33 @@ input[type="file"] {
   &__text {
     display: flex;
     flex-direction: column;
+    width: 530px;
 
     &--matchedRows {
-      border-bottom: 1px solid #f3f3f3;
       font-weight: 600;
-      padding: 14px;
+      padding: 13.7px;
       color: #238d38;
+      border-bottom: 1px solid #f3f3f3;
     }
 
     &--unmatchedRows {
       font-weight: 600;
-      padding: 14px;
+      padding: 13.7px;
       color: #e59813;
+      border-bottom: 1px solid #f3f3f3;
     }
 
     &--unknownErrors {
       font-weight: 600;
-      padding: 14px;
+      padding: 13.7px;
       color: #e4461f;
+      border-bottom: 1px solid #f3f3f3;
     }
 
     &--unresolved {
       font-weight: 700;
       color: #3e2f71;
-      padding: 14px;
+      padding: 13.7px;
       background-color: #f3f3f3;
     }
   }
@@ -193,8 +197,21 @@ input[type="file"] {
       display: flex;
       justify-content: center;
       font-weight: 600;
-      padding: 14px;
+      padding: 13.7px;
       color: #3e2f71;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid #f3f3f3;
+      }
+    }
+
+    &--unresolvedNumber {
+      display: flex;
+      justify-content: center;
+      font-weight: 600;
+      padding: 13.7px;
+      color: #3e2f71;
+      background-color: #f3f3f3;
 
       &:not(:last-child) {
         border-bottom: 1px solid #f3f3f3;
@@ -223,6 +240,46 @@ input[type="file"] {
     }
   }
 }
+
+.downloadFileContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+
+  &__headers {
+    display: flex;
+    flex-direction: column;
+
+    &--header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #222246;
+    }
+
+    &--content {
+      margin-top: 3px;
+      color: #8a8a8a;
+    }
+  }
+
+  &__box {
+    display: flex;
+    padding: 18px;
+    margin-top: 14px;
+    border: 1px solid #8a8a8a;
+
+    &--text {
+      margin: 0 550px 0 5px;
+      color: #3e2f71;
+    }
+
+    &--download {
+      height: 2.4vh;
+      width: 2.4vh;
+    }
+  }
+}
+
 .modalHeader {
   display: flex;
   justify-content: center;
