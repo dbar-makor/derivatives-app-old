@@ -26,10 +26,24 @@ interface Props {
 }
 
 const DerivativesView: React.FC<Props> = (
-  props: React.PropsWithChildren<Props>
+  props: React.PropsWithChildren<Props>,
 ) => {
   return (
-    <div className={classes["outerContainer"]}>
+    <div className={classes["container"]}>
+      <div className={classes["headers"]}>
+        <div className={classes["headers__text"]}></div>
+      </div>
+    </div>
+  );
+};
+
+DerivativesView.displayName = "DerivativesView";
+DerivativesView.defaultProps = {};
+
+export default DerivativesView;
+
+{
+  /* <div className={classes["outerContainer"]}>
       <h1 className={classes["outerContainer__title"]}>Derivatives</h1>
       <form onSubmit={props.onSubmit} className={classes["formContainer"]}>
         <div className={classes["formContainer__buttons"]}>
@@ -153,11 +167,5 @@ const DerivativesView: React.FC<Props> = (
           </div>
         </div>
       </form>
-    </div>
-  );
-};
-
-DerivativesView.displayName = "DerivativesView";
-DerivativesView.defaultProps = {};
-
-export default DerivativesView;
+    </div> */
+}

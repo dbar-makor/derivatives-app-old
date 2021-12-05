@@ -1,8 +1,7 @@
 @import "../../../styles/variables.scss";
 
 body {
-  padding: map-get($sizes, minimal-padding);
-  background-color: map-get($colors, primary);
+  background: #f3f3f3 0% 0% no-repeat padding-box;
 }
 
 input[type="file"] {

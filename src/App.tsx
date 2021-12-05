@@ -1,20 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import AppView from './App.view';
+import AppView from "./App.view";
 
-interface Props { }
+interface Props {}
 
 const App: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
-  const isLoggedIn = sessionStorage.getItem('token');
-
-  return (
-      <AppView
-        isLoggedIn={isLoggedIn}
-      ></AppView>
-  );
+  return <AppView></AppView>;
 };
 
-App.displayName = 'App';
+App.displayName = "App";
 App.defaultProps = {};
 
 export default React.memo(App);
