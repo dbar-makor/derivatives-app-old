@@ -8,36 +8,49 @@ import Svg from "../../ui/Svg/Svg";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import CircularProgress from "@mui/material/CircularProgress";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 import classes from "./Derivatives.module.scss";
+import { IDerivative } from "../../../models/derivatives";
 
 interface Props {
   readonly iconName?: keyof typeof icons;
+  readonly derivativeState?: IDerivative[];
+  readonly spinnerState?: number;
   readonly openModalState: boolean;
   readonly handleModalOpen: () => void;
   readonly handleModalClose: () => void;
+  readonly onUpload: (value: ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (e: React.FormEvent) => void;
 }
 
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 780,
-  height: 900,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-};
-
 const DerivativesView: React.FC<Props> = (
-  props: React.PropsWithChildren<Props>,
+  props: React.PropsWithChildren<Props>
 ) => {
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 780,
+    height: 900,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
     <div className={classes["container"]}>
       <nav className={classes["nav"]}>
         <div className={classes["innerNav"]}>
-          <span className={classes["navLink"]}>History</span>
+          <span className={classes["navHeader"]}>History</span>
           <Button
             className={classes["navLinkButton"]}
             onClick={props.handleModalOpen}
@@ -46,7 +59,100 @@ const DerivativesView: React.FC<Props> = (
           </Button>
         </div>
       </nav>
-      <HistoryTable />
+      <TableContainer component={Paper}>
+        <Table
+          sx={{
+            justifyContent: "center",
+            marginLeft: "auto",
+            marginRight: "auto",
+            maxWidth: 1500,
+          }}
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell className={classes["tableCellHeader"]}>
+                Username
+              </TableCell>
+              <TableCell className={classes["tableCellHeader"]}>Date</TableCell>
+              <TableCell className={classes["tableCellHeader"]}>WEX</TableCell>
+              <TableCell className={classes["tableCellHeader"]}>DRV</TableCell>
+              <TableCell className={classes["tableCellHeader"]} align="center">
+                Matched
+              </TableCell>
+              <TableCell className={classes["tableCellHeader"]} align="center">
+                Unmatched
+              </TableCell>
+              <TableCell className={classes["tableCellHeader"]} align="center">
+                Unknown
+              </TableCell>
+              <TableCell className={classes["tableCellHeader"]} align="center">
+                Complete
+              </TableCell>
+              <TableCell className={classes["tableCellHeader"]}>
+                Derivatives
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.derivativeState &&
+              props.derivativeState!.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell style={{ color: "#3E2F71", fontWeight: 700 }}>
+                    {row.username}
+                  </TableCell>
+                  <TableCell style={{ color: "#8a8a8a", fontWeight: 700 }}>
+                    {row.date}
+                  </TableCell>
+                  <TableCell
+                    style={{ color: "#3E2F71", fontWeight: 700 }}
+                    align="left"
+                  >
+                    <Svg className={classes["attachSvg"]} name="attach" />
+                    {row.wex}
+                  </TableCell>
+                  <TableCell
+                    style={{ color: "#3E2F71", fontWeight: 700 }}
+                    align="left"
+                  >
+                    <Svg className={classes["attachSvg"]} name="attach" />
+                    {row.drv}
+                  </TableCell>
+                  <TableCell
+                    style={{ color: "#238D38", fontWeight: 700 }}
+                    align="center"
+                  >
+                    {row.matched}
+                  </TableCell>
+                  <TableCell
+                    style={{ color: "#E59813", fontWeight: 700 }}
+                    align="center"
+                  >
+                    {row.unmatched}
+                  </TableCell>
+                  <TableCell
+                    style={{ color: "#E4461F", fontWeight: 700 }}
+                    align="center"
+                  >
+                    {row.unknown}
+                  </TableCell>
+                  <TableCell
+                    style={{ color: "#3E2F71", fontWeight: 700 }}
+                    align="center"
+                  >
+                    {row.complete}
+                  </TableCell>
+                  <TableCell
+                    style={{ color: "#3E2F71", fontWeight: 700 }}
+                    align="left"
+                  >
+                    <Svg className={classes["attachSvg"]} name="attach" />
+                    {row.derivatives}
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <Modal open={props.openModalState} onClose={props.handleModalClose}>
         <Box sx={style}>
           <span className={classes["modalHeader"]}>
@@ -65,27 +171,58 @@ const DerivativesView: React.FC<Props> = (
                 After uploading files proccessing will start automaticaly
               </span>
             </div>
-            <div className={classes["uploadFilesContainer__buttons"]}>
+            <form
+              className={classes["uploadFilesContainer__form"]}
+              onSubmit={props.onSubmit}
+            >
               <div className={classes["buttonContainer"]}>
                 <Button className={classes["buttonContainer__button"]}>
-                  <Svg className={classes["addFileSvg"]} name="addFile" />
-                  <span>
-                    <input type="file" accept=".csv" id={"WEX"} />
-                  </span>
+                  <label>
+                    <Svg className={classes["addFileSvg"]} name="addFile" />
+                    <input
+                      style={{ display: "none" }}
+                      onChange={props.onUpload}
+                      type="file"
+                      accept=".csv"
+                      id="WEX"
+                    />
+                  </label>
                 </Button>
                 <span className={classes["buttonContainer__text"]}>WEX</span>
               </div>
               <div className={classes["buttonContainer"]}>
                 <Button className={classes["buttonContainer__button"]}>
-                  <Svg className={classes["addFileSvg"]} name="addFile" />
-                  <span>
-                    <input type="file" accept=".csv" id={"WEX"} />
-                  </span>
+                  <label>
+                    <Svg className={classes["addFileSvg"]} name="addFile" />
+                    <input
+                      style={{ display: "none" }}
+                      onChange={props.onUpload}
+                      type="file"
+                      accept=".csv"
+                      id={"DRV"}
+                    />
+                  </label>
                 </Button>
                 <span className={classes["buttonContainer__text"]}>DRV</span>
               </div>
-            </div>
+              <Button
+                className={classes["processContainer__button"]}
+                variant="contained"
+                color="info"
+                type="submit"
+              >
+                Process
+              </Button>
+            </form>
           </div>
+          {/* <div className={classes["uploadFilesSpinnerContainer"]}>
+            <CircularProgress
+              style={{ color: "#3E2F72", padding: 68 }}
+              size={150}
+              variant="determinate"
+              value={props.spinnerState}
+            />
+          </div> */}
           <div className={classes["derivativesContainer"]}>
             <div className={classes["derivativesContainer__headers"]}>
               <span
@@ -137,7 +274,7 @@ const DerivativesView: React.FC<Props> = (
                       classes["derivativesTableContainer__data--number"]
                     }
                   >
-                    250
+                    200
                   </div>
                   <div
                     className={
@@ -216,131 +353,3 @@ DerivativesView.displayName = "DerivativesView";
 DerivativesView.defaultProps = {};
 
 export default DerivativesView;
-
-{
-  /* <div className={classes["outerContainer"]}>
-      <h1 className={classes["outerContainer__title"]}>Derivatives</h1>
-      <form onSubmit={props.onSubmit} className={classes["formContainer"]}>
-        <div className={classes["formContainer__buttons"]}>
-          <Button
-            className={classes["buttonContainer__button"]}
-            variant="contained"
-            color="success"
-          >
-            {!props.WEXSpinnerLoaderState ? (
-              <label className={classes["buttonContainer__label"]}>
-                {!props.checkServerResponseUploadState ? (
-                  <span>
-                    <input
-                      type="file"
-                      accept=".csv"
-                      onChange={props.onUpload}
-                      id={"WEX"}
-                    />
-                    <Svg name="plus" className={classes["plusSvg"]} />
-                    <h1>WEX</h1>
-                  </span>
-                ) : (
-                  <span>
-                    <Svg name="checkMark" className={classes["checkMarkSvg"]} />
-                    <h1>WEX UPLOADED</h1>
-                  </span>
-                )}
-              </label>
-            ) : (
-              <CircularProgress color="inherit" size={140} />
-            )}
-          </Button>
-          <Button
-            className={classes["buttonContainer__button"]}
-            variant="contained"
-            color="success"
-          >
-            {!props.DRVSpinnerLoaderState ? (
-              <label className={classes["buttonContainer__label"]}>
-                {!props.checkServerResponseUploadState ? (
-                  <span>
-                    <input
-                      type="file"
-                      accept=".csv"
-                      onChange={props.onUpload}
-                      id={"DRV"}
-                    />
-                    <Svg name="plus" className={classes["plusSvg"]} />
-                    <h1>DRV</h1>
-                  </span>
-                ) : (
-                  <span>
-                    <Svg name="checkMark" className={classes["checkMarkSvg"]} />
-                    <h1>DRV UPLOADED</h1>
-                  </span>
-                )}
-              </label>
-            ) : (
-              <CircularProgress color="inherit" size={140} />
-            )}
-          </Button>
-        </div>
-        <div className={classes["processContainer"]}>
-          {!props.processErrorResponseState ? (
-            props.processEnabledState ? (
-              <Button
-                className={classes["processContainer__button"]}
-                variant="contained"
-                color="info"
-                type="submit"
-              >
-                {!props.processState ? (
-                  <h1>PROCESS</h1>
-                ) : (
-                  <span>
-                    <h1>PROCESS</h1>
-                    <LinearProgress
-                      className={classes["processContainer__linearProgress"]}
-                      color="inherit"
-                    />
-                  </span>
-                )}
-              </Button>
-            ) : (
-              <Button
-                className={classes["processContainer__button"]}
-                variant="contained"
-                color="info"
-                type="submit"
-                disabled
-              >
-                {!props.processState ? (
-                  <h1>PROCESS</h1>
-                ) : (
-                  <span>
-                    <h1>PROCESS</h1>
-                    <LinearProgress
-                      className={classes["processContainer__linearProgress"]}
-                      color="inherit"
-                    />
-                  </span>
-                )}
-              </Button>
-            )
-          ) : (
-            <div className={classes["processContainer__error"]}>
-              Error details Error details Error details Error details Error
-              Error details Error details Error details Error details details
-            </div>
-          )}
-          <div className={classes["processContainer__report"]}>
-            <li className={classes["processContainer__report--green"]}>
-              Something
-            </li>
-            <li className={classes["processContainer__report--orenge"]}>
-              Something
-            </li>
-            <li className={classes["processContainer__report--red"]}>
-              Something
-            </li>
-          </div>
-        </div>
-      </form>
-    </div> */
-}

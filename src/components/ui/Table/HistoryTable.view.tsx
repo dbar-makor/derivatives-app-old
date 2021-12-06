@@ -33,10 +33,10 @@ const HistoryTableView: React.FC<Props> = (
   props: React.PropsWithChildren<Props>
 ) => {
   const createData = (
-    name: string,
+    name: number,
     date: string,
     WEX: string,
-    DVR: string,
+    DRV: string,
     matched: number,
     unmatched: number,
     unknown: number,
@@ -47,7 +47,7 @@ const HistoryTableView: React.FC<Props> = (
       name,
       date,
       WEX,
-      DVR,
+      DRV,
       matched,
       unmatched,
       unknown,
@@ -58,7 +58,7 @@ const HistoryTableView: React.FC<Props> = (
 
   const rows = [
     createData(
-      "name",
+      Math.random(),
       "02/23/2021",
       "Makor.wex",
       "Makor.wex",
@@ -72,7 +72,7 @@ const HistoryTableView: React.FC<Props> = (
       </div>
     ),
     createData(
-      "name",
+      Math.random(),
       "02/23/2021",
       "Makor.wex",
       "Makor.wex",
@@ -86,29 +86,7 @@ const HistoryTableView: React.FC<Props> = (
       </div>
     ),
     createData(
-      "name",
-      "02/23/2021",
-      "Makor.wex",
-      "Makor.wex",
-      24,
-      4.0,
-      3.0,
-      <Svg name="complete" />,
-      <span className={classes["divider"]}>_____</span>
-    ),
-    createData(
-      "name",
-      "02/23/2021",
-      "Makor.wex",
-      "Makor.wex",
-      24,
-      4.0,
-      3.0,
-      <Svg name="complete" />,
-      <span className={classes["divider"]}>_____</span>
-    ),
-    createData(
-      "name",
+      Math.random(),
       "02/23/2021",
       "Makor.wex",
       "Makor.wex",
@@ -122,37 +100,92 @@ const HistoryTableView: React.FC<Props> = (
       </div>
     ),
     createData(
-      "name",
+      Math.random(),
       "02/23/2021",
       "Makor.wex",
       "Makor.wex",
       24,
       4.0,
       3.0,
-      <Svg name="complete" />,
-      <span className={classes["divider"]}>_____</span>
+      3.0 + "%",
+      <div>
+        <Svg className={classes["attachSvg"]} name="attach" />
+        Makor.wex
+      </div>
     ),
     createData(
-      "name",
+      Math.random(),
       "02/23/2021",
       "Makor.wex",
       "Makor.wex",
       24,
       4.0,
       3.0,
-      <Svg name="complete" />,
-      <span className={classes["divider"]}>_____</span>
+      3.0 + "%",
+      <div>
+        <Svg className={classes["attachSvg"]} name="attach" />
+        Makor.wex
+      </div>
+    ),
+    createData(
+      Math.random(),
+      "02/23/2021",
+      "Makor.wex",
+      "Makor.wex",
+      24,
+      4.0,
+      3.0,
+      3.0 + "%",
+      <div>
+        <Svg className={classes["attachSvg"]} name="attach" />
+        Makor.wex
+      </div>
+    ),
+    createData(
+      Math.random(),
+      "02/23/2021",
+      "Makor.wex",
+      "Makor.wex",
+      24,
+      4.0,
+      3.0,
+      3.0 + "%",
+      <div>
+        <Svg className={classes["attachSvg"]} name="attach" />
+        Makor.wex
+      </div>
+    ),
+    createData(
+      Math.random(),
+      "02/23/2021",
+      "Makor.wex",
+      "Makor.wex",
+      24,
+      4.0,
+      3.0,
+      3.0 + "%",
+      <div>
+        <Svg className={classes["attachSvg"]} name="attach" />
+        Makor.wex
+      </div>
     ),
   ];
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ maxWidth: 1450, marginLeft: 37 }}>
+      <Table
+        sx={{
+          justifyContent: "center",
+          marginLeft: "auto",
+          marginRight: "auto",
+          maxWidth: 1500,
+        }}
+      >
         <TableHead>
           <TableRow>
             <TableCell className={classes["tableCellHeader"]}>Date</TableCell>
             <TableCell className={classes["tableCellHeader"]}>WEX</TableCell>
-            <TableCell className={classes["tableCellHeader"]}>DVR</TableCell>
+            <TableCell className={classes["tableCellHeader"]}>DRV</TableCell>
             <TableCell className={classes["tableCellHeader"]} align="center">
               Matched
             </TableCell>
@@ -180,7 +213,7 @@ const HistoryTableView: React.FC<Props> = (
               </TableCell>
               <TableCell style={{ color: "#3E2F71" }} align="left">
                 <Svg className={classes["attachSvg"]} name="attach" />
-                {row.DVR}
+                {row.DRV}
               </TableCell>
               <TableCell style={{ color: "#238D38" }} align="center">
                 {row.matched}

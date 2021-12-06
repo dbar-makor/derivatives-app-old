@@ -5,22 +5,23 @@ body {
 }
 
 .nav {
-  z-index: 100;
   position: sticky;
   top: 0;
   height: 204px;
   background: transparent linear-gradient(270deg, #3e2f72 0%, #271e49 100%) 0%
     0% no-repeat padding-box;
-  padding: 0 307px;
 }
 
 .innerNav {
-  height: 150%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 150%;
+  max-width: 1480px;
+  margin-left: 390px;
+  padding: 0 12px 0 12px;
 
-  .navLink {
+  .navHeader {
     color: #f3f3f3;
     font-size: 3rem !important;
     font: normal normal 36px/43px Cormorant Garamond;
@@ -29,8 +30,7 @@ body {
 
   .navLinkButton {
     transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
-    padding: 12px 27px 12px 30px;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     cursor: pointer;
     border: 2px solid #fcfcfc;
     color: #fcfcfc;
@@ -43,8 +43,11 @@ body {
   }
 }
 
-input[type="file"] {
-  display: none;
+.modalHeader {
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  color: #35285f;
 }
 
 .headers {
@@ -82,7 +85,7 @@ input[type="file"] {
     }
   }
 
-  &__buttons {
+  &__form {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -116,8 +119,13 @@ input[type="file"] {
     width: 6vh;
     height: 6vh;
     filter: invert(13%) sepia(98%) saturate(1546%) hue-rotate(239deg)
-      brightness(90%) contrast(95%);
+      brightness(90%) contrast(90%);
   }
+}
+
+.uploadFilesSpinnerContainer {
+  display: flex;
+  justify-content: center;
 }
 
 .derivativesContainer {
@@ -265,7 +273,7 @@ input[type="file"] {
   &__box {
     display: flex;
     padding: 18px;
-    margin-top: 14px;
+    margin-top: 24px;
     border: 1px solid #8a8a8a;
 
     &--text {
@@ -280,9 +288,14 @@ input[type="file"] {
   }
 }
 
-.modalHeader {
-  display: flex;
-  justify-content: center;
-  font-size: 2rem;
-  color: #35285f;
+.divider {
+  color: #3e3f71;
+}
+
+.attachSvg {
+  margin-right: 7px;
+}
+
+.tableCellHeader {
+  color: #8a8a8a !important;
 }
