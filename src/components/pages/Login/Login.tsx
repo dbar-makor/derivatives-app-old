@@ -5,7 +5,7 @@ import { AxiosError, AxiosResponse } from "axios";
 
 import { backendAPIAxios } from "../../../utils/http";
 
-import { ILoginResponse } from "../../../models/response/response";
+// import { ILoginResponse } from "../../../models/response/response";
 
 import icons from "../../../assets/icons";
 
@@ -31,11 +31,11 @@ const Login: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
     e.preventDefault();
 
     backendAPIAxios
-      .post("/auth", {
+      .post("/auth/login", {
         username: usernameState,
         password: passwordState,
       })
-      .then((response: AxiosResponse<ILoginResponse>) => {
+      .then((response: AxiosResponse) => {
         sessionStorage.setItem("token", "Bearer " + response.data.token);
         backendAPIAxios.defaults.headers.common["Authorization"] =
           "Bearer " + response.data.token;

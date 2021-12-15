@@ -16,7 +16,7 @@ interface Props {
 }
 
 const Derivatives: React.FC<Props> = (
-  props: React.PropsWithChildren<Props>
+  props: React.PropsWithChildren<Props>,
 ) => {
   const [derivativeState, setDerivativeState] = useState<
     IDerivative[] | undefined
@@ -34,7 +34,7 @@ const Derivatives: React.FC<Props> = (
   useEffect(() => {
     const timer = setInterval(() => {
       setSpinnerState((prevSpinner) =>
-        prevSpinner >= 100 ? 0 : prevSpinner + 10
+        prevSpinner >= 100 ? 0 : prevSpinner + 10,
       );
     }, 800);
 
@@ -93,6 +93,25 @@ const Derivatives: React.FC<Props> = (
       });
   }, []);
 
+  const onDownload = (fileName: string) => {
+    backendAPIAxios
+      .get("/derivatives/download/" + fileName, {
+        responseType: "blob",
+        headers: {},
+      })
+      .then((response: AxiosResponse) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((e: AxiosError) => {
+        console.log(`Failed to download file with error: ${e}`);
+      });
+  };
+
   return (
     <DerivativesView
       iconName={props.iconName}
@@ -103,6 +122,7 @@ const Derivatives: React.FC<Props> = (
       handleModalClose={handleModalClose}
       onUpload={onUpload}
       onSubmit={onSubmit}
+      onDownload={onDownload}
     >
       {props.children}
     </DerivativesView>

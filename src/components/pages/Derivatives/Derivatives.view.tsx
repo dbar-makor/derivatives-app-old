@@ -2,7 +2,7 @@ import React, { ChangeEvent, ReactElement } from "react";
 
 import icons from "../../../assets/icons";
 
-import HistoryTable from "../../ui/Table/HistoryTable";
+// import HistoryTable from "../../ui/Table/HistoryTable";
 import Svg from "../../ui/Svg/Svg";
 
 import Box from "@mui/material/Box";
@@ -28,11 +28,12 @@ interface Props {
   readonly handleModalOpen: () => void;
   readonly handleModalClose: () => void;
   readonly onUpload: (value: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent) => void;
+  onSubmit: (event: React.FormEvent) => void;
+  onDownload: (event: any) => void;
 }
 
 const DerivativesView: React.FC<Props> = (
-  props: React.PropsWithChildren<Props>
+  props: React.PropsWithChildren<Props>,
 ) => {
   const style = {
     position: "absolute" as "absolute",
@@ -95,7 +96,7 @@ const DerivativesView: React.FC<Props> = (
           </TableHead>
           <TableBody>
             {props.derivativeState &&
-              props.derivativeState!.map((row) => (
+              props.derivativeState.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell style={{ color: "#3E2F71", fontWeight: 700 }}>
                     {row.username}
@@ -103,19 +104,23 @@ const DerivativesView: React.FC<Props> = (
                   <TableCell style={{ color: "#8a8a8a", fontWeight: 700 }}>
                     {row.date}
                   </TableCell>
-                  <TableCell
-                    style={{ color: "#3E2F71", fontWeight: 700 }}
-                    align="left"
-                  >
+                  <TableCell align="left">
                     <Svg className={classes["attachSvg"]} name="attach" />
-                    {row.wex}
+                    <button
+                      className={classes["downloadButton"]}
+                      onClick={() => props.onDownload(row.wex)}
+                    >
+                      {row.wex}
+                    </button>
                   </TableCell>
-                  <TableCell
-                    style={{ color: "#3E2F71", fontWeight: 700 }}
-                    align="left"
-                  >
+                  <TableCell align="left">
                     <Svg className={classes["attachSvg"]} name="attach" />
-                    {row.drv}
+                    <button
+                      className={classes["downloadButton"]}
+                      onClick={() => props.onDownload(row.drv)}
+                    >
+                      {row.drv}
+                    </button>
                   </TableCell>
                   <TableCell
                     style={{ color: "#238D38", fontWeight: 700 }}
@@ -141,12 +146,14 @@ const DerivativesView: React.FC<Props> = (
                   >
                     {row.complete}
                   </TableCell>
-                  <TableCell
-                    style={{ color: "#3E2F71", fontWeight: 700 }}
-                    align="left"
-                  >
+                  <TableCell align="left">
                     <Svg className={classes["attachSvg"]} name="attach" />
-                    {row.derivatives}
+                    <button
+                      className={classes["downloadButton"]}
+                      onClick={() => props.onDownload(row.derivatives)}
+                    >
+                      {row.derivatives}
+                    </button>
                   </TableCell>
                 </TableRow>
               ))}

@@ -15,10 +15,9 @@ body {
 .innerNav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   height: 150%;
   max-width: 1480px;
-  margin-left: 390px;
+  margin: 0 auto;
   padding: 0 12px 0 12px;
 
   .navHeader {
@@ -29,6 +28,7 @@ body {
   }
 
   .navLinkButton {
+    margin-left: 1075px;
     transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
     font-size: 1.3rem;
     cursor: pointer;
@@ -118,6 +118,7 @@ body {
   .addFileSvg {
     width: 6vh;
     height: 6vh;
+    cursor: pointer;
     filter: invert(13%) sepia(98%) saturate(1546%) hue-rotate(239deg)
       brightness(90%) contrast(90%);
   }
@@ -294,6 +295,14 @@ body {
 
 .attachSvg {
   margin-right: 7px;
+}
+
+.downloadButton {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-weight: 700;
+  color: #3e2f71;
 }
 
 .tableCellHeader {
