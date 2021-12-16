@@ -1,8 +1,7 @@
-import React, { ChangeEvent, ReactElement } from "react";
+import React, { ChangeEvent } from "react";
 
 import icons from "../../../assets/icons";
 
-// import HistoryTable from "../../ui/Table/HistoryTable";
 import Svg from "../../ui/Svg/Svg";
 
 import Box from "@mui/material/Box";
@@ -23,12 +22,14 @@ import { IDerivative } from "../../../models/derivatives";
 interface Props {
   readonly iconName?: keyof typeof icons;
   readonly derivativeState?: IDerivative[];
-  readonly spinnerState?: number;
+  readonly WEXState: boolean;
+  readonly spinnerState: boolean;
+  readonly spinnerTimerState?: number;
   readonly openModalState: boolean;
   readonly handleModalOpen: () => void;
   readonly handleModalClose: () => void;
   readonly onUpload: (value: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (event: React.FormEvent) => void;
+  onSubmit: () => void;
   onDownload: (event: string) => void;
 }
 
@@ -165,71 +166,91 @@ const DerivativesView: React.FC<Props> = (
           <span className={classes["modalHeader"]}>
             Derivatives reconciliation
           </span>
-          <div className={classes["uploadFilesContainer"]}>
-            <div className={classes["uploadFilesContainer__headers"]}>
-              <span
-                className={classes["uploadFilesContainer__headers--header"]}
+          {!props.spinnerState ? (
+            <div className={classes["uploadFilesContainer"]}>
+              <div className={classes["uploadFilesContainer__headers"]}>
+                <span
+                  className={classes["uploadFilesContainer__headers--header"]}
+                >
+                  1. Upload Files
+                </span>
+                <span
+                  className={classes["uploadFilesContainer__headers--content"]}
+                >
+                  After uploading files processing will start automaticaly
+                </span>
+              </div>
+              <form
+                className={classes["uploadFilesContainer__form"]}
+                onSubmit={props.onSubmit}
               >
-                1. Upload Files
-              </span>
-              <span
-                className={classes["uploadFilesContainer__headers--content"]}
-              >
-                After uploading files processing will start automaticaly
-              </span>
+                <div className={classes["buttonContainer"]}>
+                  {!props.WEXState ? (
+                    <Button className={classes["buttonContainer__button"]}>
+                      <label>
+                        <Svg className={classes["addFileSvg"]} name="addFile" />
+                        <input
+                          style={{ display: "none" }}
+                          onChange={props.onUpload}
+                          type="file"
+                          accept=".csv"
+                          id="WEX"
+                        />
+                      </label>
+                    </Button>
+                  ) : (
+                    <Button
+                      disabled
+                      className={classes["buttonContainer__buttonUploaded"]}
+                    >
+                      <label>
+                        <Svg
+                          className={classes["addFileSvg"]}
+                          name="fileUploaded"
+                        />
+                      </label>
+                    </Button>
+                  )}
+                  <span className={classes["buttonContainer__text"]}>WEX</span>
+                </div>
+                <div className={classes["buttonContainer"]}>
+                  <Button className={classes["buttonContainer__button"]}>
+                    <label>
+                      <Svg className={classes["addFileSvg"]} name="addFile" />
+                      <input
+                        style={{ display: "none" }}
+                        onChange={props.onUpload}
+                        type="file"
+                        accept=".csv"
+                        id={"DRV"}
+                      />
+                    </label>
+                  </Button>
+                  {/* <Button
+                    disabled
+                    className={classes["buttonContainer__buttonUploaded"]}
+                  >
+                    <label>
+                      <Svg
+                        className={classes["addFileSvg"]}
+                        name="fileUploaded"
+                      />
+                    </label>
+                  </Button> */}
+                  <span className={classes["buttonContainer__text"]}>DRV</span>
+                </div>
+              </form>
             </div>
-            <form
-              className={classes["uploadFilesContainer__form"]}
-              onSubmit={props.onSubmit}
-            >
-              <div className={classes["buttonContainer"]}>
-                <Button className={classes["buttonContainer__button"]}>
-                  <label>
-                    <Svg className={classes["addFileSvg"]} name="addFile" />
-                    <input
-                      style={{ display: "none" }}
-                      onChange={props.onUpload}
-                      type="file"
-                      accept=".csv"
-                      id="WEX"
-                    />
-                  </label>
-                </Button>
-                <span className={classes["buttonContainer__text"]}>WEX</span>
-              </div>
-              <div className={classes["buttonContainer"]}>
-                <Button className={classes["buttonContainer__button"]}>
-                  <label>
-                    <Svg className={classes["addFileSvg"]} name="addFile" />
-                    <input
-                      style={{ display: "none" }}
-                      onChange={props.onUpload}
-                      type="file"
-                      accept=".csv"
-                      id={"DRV"}
-                    />
-                  </label>
-                </Button>
-                <span className={classes["buttonContainer__text"]}>DRV</span>
-              </div>
-              <Button
-                className={classes["processContainer__button"]}
-                variant="contained"
-                color="info"
-                type="submit"
-              >
-                Process
-              </Button>
-            </form>
-          </div>
-          {/* <div className={classes["uploadFilesSpinnerContainer"]}>
-            <CircularProgress
-              style={{ color: "#3E2F72", padding: 68 }}
-              size={150}
-              variant="determinate"
-              value={props.spinnerState}
-            />
-          </div> */}
+          ) : (
+            <div className={classes["uploadFilesSpinnerContainer"]}>
+              <CircularProgress
+                style={{ color: "#3E2F72", padding: 68 }}
+                size={150}
+                variant="determinate"
+                value={props.spinnerTimerState}
+              />
+            </div>
+          )}
           <div className={classes["derivativesContainer"]}>
             <div className={classes["derivativesContainer__headers"]}>
               <span

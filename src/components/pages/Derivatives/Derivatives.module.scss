@@ -108,6 +108,12 @@ body {
         border: 2px dashed #8a8a8a !important;
       }
 
+      &__buttonUploaded {
+        width: 272px;
+        height: 148px;
+        background-color: #f3f3f3;
+      }
+
       &__text {
         margin-top: 10px;
         font-size: 1.5rem;
@@ -118,7 +124,7 @@ body {
 
   .addFileSvg {
     width: 6vh;
-    height: 6vh;
+    height: 7.7vh;
     cursor: pointer;
     filter: invert(13%) sepia(98%) saturate(1546%) hue-rotate(239deg)
       brightness(90%) contrast(90%);
