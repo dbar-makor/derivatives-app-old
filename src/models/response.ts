@@ -16,3 +16,10 @@ export interface IGetDerivativesResponse extends IServerResponseData {
     | "username"
   >[];
 }
+
+export interface ILoginResponse extends IServerResponseData {
+  readonly data?: Readonly<{
+    token: string;
+    username: string;
+  }>;
+}

@@ -15,7 +15,7 @@ body {
 .innerNav {
   display: flex;
   align-items: center;
-  height: 150%;
+  height: 130%;
   max-width: 1480px;
   margin: 0 auto;
   padding: 0 12px 0 12px;
@@ -24,17 +24,18 @@ body {
     color: #f3f3f3;
     font-size: 3rem !important;
     font: normal normal 36px/43px Cormorant Garamond;
-    margin-top: 7px;
+    margin-top: 50px;
   }
 
   .navLinkButton {
-    margin-left: 1075px;
     transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
-    font-size: 1.3rem;
     cursor: pointer;
-    border: 2px solid #fcfcfc;
+    margin-left: 1075px;
+    margin-top: 50px;
+    font-size: 1.3rem;
     color: #fcfcfc;
     background-color: #3e2f72;
+    border: 2px solid #fcfcfc;
 
     &:hover {
       background: #fcfcfc 0% 0% no-repeat padding-box;

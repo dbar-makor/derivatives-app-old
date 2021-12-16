@@ -43,7 +43,7 @@ const Derivatives: React.FC<Props> = (
     };
   }, []);
 
-  const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
+  const onUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
 
     let id = event.target.id;
@@ -55,6 +55,12 @@ const Derivatives: React.FC<Props> = (
     };
 
     fileReader.readAsDataURL(file);
+
+    console.log(CSVFilesState.length);
+
+    if (CSVFilesState.length === 1) {
+      onSubmit(event);
+    }
   };
 
   const onSubmit = (event: React.FormEvent) => {
@@ -63,7 +69,11 @@ const Derivatives: React.FC<Props> = (
     console.log(CSVFilesState);
 
     backendAPIAxios
-      .post("/derivatives", CSVFilesState)
+      .post("/derivatives", CSVFilesState, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`,
+        },
+      })
       .then((response: AxiosResponse) => {
         // if (!response.data) {
         //   return alert("Failed to upload CSV");
@@ -80,7 +90,11 @@ const Derivatives: React.FC<Props> = (
 
   useEffect(() => {
     backendAPIAxios
-      .get("/derivatives")
+      .get("/derivatives", {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`,
+        },
+      })
       .then((response: AxiosResponse<IGetDerivativesResponse>) => {
         if (!response.data.data) {
           return console.log("Failed to upload CSV");

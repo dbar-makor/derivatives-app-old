@@ -5,7 +5,7 @@ import { AxiosError, AxiosResponse } from "axios";
 
 import { backendAPIAxios } from "../../../utils/http";
 
-// import { ILoginResponse } from "../../../models/response/response";
+import { ILoginResponse } from "../../../models/response";
 
 import icons from "../../../assets/icons";
 
@@ -30,15 +30,17 @@ const Login: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
+    console.log(usernameState + " f " + passwordState);
+
     backendAPIAxios
       .post("/auth/login", {
         username: usernameState,
         password: passwordState,
       })
-      .then((response: AxiosResponse) => {
-        sessionStorage.setItem("token", "Bearer " + response.data.token);
+      .then((response: AxiosResponse<ILoginResponse>) => {
+        sessionStorage.setItem("token", response.data.data!.token);
         backendAPIAxios.defaults.headers.common["Authorization"] =
-          "Bearer " + response.data.token;
+          "Bearer " + response.data.data!.token;
         history.push("/derivatives");
       })
       .catch((e: AxiosError) => {

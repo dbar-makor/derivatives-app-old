@@ -29,7 +29,7 @@ interface Props {
   readonly handleModalClose: () => void;
   readonly onUpload: (value: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (event: React.FormEvent) => void;
-  onDownload: (event: any) => void;
+  onDownload: (event: string) => void;
 }
 
 const DerivativesView: React.FC<Props> = (
@@ -175,7 +175,7 @@ const DerivativesView: React.FC<Props> = (
               <span
                 className={classes["uploadFilesContainer__headers--content"]}
               >
-                After uploading files proccessing will start automaticaly
+                After uploading files processing will start automaticaly
               </span>
             </div>
             <form
