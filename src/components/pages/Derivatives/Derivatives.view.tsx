@@ -21,7 +21,8 @@ import { IDerivative } from "../../../models/derivatives";
 
 interface Props {
   readonly iconName?: keyof typeof icons;
-  readonly derivativeState?: IDerivative[];
+  readonly derivativesState?: IDerivative[];
+  readonly derivativeState?: IDerivative;
   readonly WEXState: boolean;
   readonly spinnerState: boolean;
   readonly spinnerTimerState?: number;
@@ -34,7 +35,7 @@ interface Props {
 }
 
 const DerivativesView: React.FC<Props> = (
-  props: React.PropsWithChildren<Props>,
+  props: React.PropsWithChildren<Props>
 ) => {
   const style = {
     position: "absolute" as "absolute",
@@ -96,8 +97,8 @@ const DerivativesView: React.FC<Props> = (
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.derivativeState &&
-              props.derivativeState.map((row) => (
+            {props.derivativesState &&
+              props.derivativesState.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell style={{ color: "#3E2F71", fontWeight: 700 }}>
                     {row.username}
@@ -226,17 +227,6 @@ const DerivativesView: React.FC<Props> = (
                       />
                     </label>
                   </Button>
-                  {/* <Button
-                    disabled
-                    className={classes["buttonContainer__buttonUploaded"]}
-                  >
-                    <label>
-                      <Svg
-                        className={classes["addFileSvg"]}
-                        name="fileUploaded"
-                      />
-                    </label>
-                  </Button> */}
                   <span className={classes["buttonContainer__text"]}>DRV</span>
                 </div>
               </form>
@@ -246,8 +236,6 @@ const DerivativesView: React.FC<Props> = (
               <CircularProgress
                 style={{ color: "#3E2F72", padding: 68 }}
                 size={150}
-                variant="determinate"
-                value={props.spinnerTimerState}
               />
             </div>
           )}
@@ -302,21 +290,60 @@ const DerivativesView: React.FC<Props> = (
                       classes["derivativesTableContainer__data--number"]
                     }
                   >
-                    200
+                    {!props.spinnerState ? (
+                      <React.Fragment>
+                        {!props.derivativeState?.matched
+                          ? "0"
+                          : props.derivativeState?.matched}
+                      </React.Fragment>
+                    ) : (
+                      <div className={classes["uploadFilesSpinnerContainer"]}>
+                        <CircularProgress
+                          style={{ color: "#3E2F72" }}
+                          size={21.4}
+                        />
+                      </div>
+                    )}
                   </div>
                   <div
                     className={
                       classes["derivativesTableContainer__data--number"]
                     }
                   >
-                    50
+                    {!props.spinnerState ? (
+                      <React.Fragment>
+                        {!props.derivativeState?.unmatched
+                          ? "0"
+                          : props.derivativeState?.unmatched}
+                      </React.Fragment>
+                    ) : (
+                      <div className={classes["uploadFilesSpinnerContainer"]}>
+                        <CircularProgress
+                          style={{ color: "#3E2F72" }}
+                          size={21.2}
+                        />
+                      </div>
+                    )}
                   </div>
                   <div
                     className={
                       classes["derivativesTableContainer__data--number"]
                     }
                   >
-                    10
+                    {!props.spinnerState ? (
+                      <React.Fragment>
+                        {!props.derivativeState?.unknown
+                          ? "0"
+                          : props.derivativeState?.unknown}
+                      </React.Fragment>
+                    ) : (
+                      <div className={classes["uploadFilesSpinnerContainer"]}>
+                        <CircularProgress
+                          style={{ color: "#3E2F72" }}
+                          size={21.2}
+                        />
+                      </div>
+                    )}
                   </div>
                   <div
                     className={
@@ -325,7 +352,16 @@ const DerivativesView: React.FC<Props> = (
                       ]
                     }
                   >
-                    60
+                    {!props.spinnerState ? (
+                      <React.Fragment>0</React.Fragment>
+                    ) : (
+                      <div className={classes["uploadFilesSpinnerContainer"]}>
+                        <CircularProgress
+                          style={{ color: "#3E2F72" }}
+                          size={21.2}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -342,7 +378,20 @@ const DerivativesView: React.FC<Props> = (
                     classes["derivativesTableContainer__calculator--percentage"]
                   }
                 >
-                  70%
+                  {!props.spinnerState ? (
+                    <React.Fragment>
+                      {!props.derivativeState?.complete
+                        ? "0%"
+                        : +props.derivativeState?.complete + "%"}
+                    </React.Fragment>
+                  ) : (
+                    <div className={classes["uploadFilesSpinnerContainer"]}>
+                      <CircularProgress
+                        style={{ color: "#3E2F72", marginTop: 15 }}
+                        size={50}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -363,12 +412,40 @@ const DerivativesView: React.FC<Props> = (
             <div className={classes["downloadFileContainer__box"]}>
               <Svg name="attach" />
               <span className={classes["downloadFileContainer__box--text"]}>
-                unresoled.drv
+                {!props.derivativeState?.derivatives ? (
+                  <span style={{ fontWeight: 600 }}>unresolved.drv</span>
+                ) : (
+                  <div className={classes["downloadFileContainer__box--link"]}>
+                    <Svg name="attach" />
+                    <button
+                      className={classes["downloadButton"]}
+                      onClick={() =>
+                        props.onDownload(props.derivativeState!.derivatives)
+                      }
+                    >
+                      {props.derivativeState?.derivatives}
+                    </button>
+                  </div>
+                )}
               </span>
-              <Svg
-                className={classes["downloadFileContainer__box--download"]}
-                name="download"
-              />
+              {!props.derivativeState?.derivatives ? (
+                <Svg
+                  className={classes["downloadFileContainer__box--download"]}
+                  name="download"
+                />
+              ) : (
+                <button
+                  className={classes["downloadButton"]}
+                  onClick={() =>
+                    props.onDownload(props.derivativeState!.derivatives)
+                  }
+                >
+                  <Svg
+                    className={classes["downloadFileContainer__box--download"]}
+                    name="download"
+                  />
+                </button>
+              )}
             </div>
           </div>
         </Box>

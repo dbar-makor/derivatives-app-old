@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { AxiosResponse, AxiosError } from "axios";
 
@@ -6,7 +6,10 @@ import { backendAPIAxios } from "../../../utils/http";
 
 import { IDerivative } from "../../../models/derivatives";
 
-import { IGetDerivativesResponse } from "../../../models/response";
+import {
+  IGetDerivativeResponse,
+  IGetDerivativesResponse,
+} from "../../../models/response";
 import { IServerResponseData } from "../../../models/shared/response";
 
 import icons from "../../../assets/icons";
@@ -18,15 +21,18 @@ interface Props {
 }
 
 const Derivatives: React.FC<Props> = (
-  props: React.PropsWithChildren<Props>,
+  props: React.PropsWithChildren<Props>
 ) => {
-  const [derivativeState, setDerivativeState] = useState<
+  const [derivativesState, setDerivativesState] = useState<
     IDerivative[] | undefined
+  >(undefined);
+
+  const [derivativeState, setDerivativeState] = useState<
+    IDerivative | undefined
   >(undefined);
 
   const [WEXState, setWEXState] = useState<boolean>(false);
   const [spinnerState, setSpinnerState] = useState<boolean>(false);
-  const [spinnerTimerState, setSpinnerTimerState] = useState<number>(0);
 
   const [openModalState, setOpenModalState] = useState<boolean>(false);
 
@@ -38,18 +44,10 @@ const Derivatives: React.FC<Props> = (
   const handleModalClose = () => setOpenModalState(false);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setSpinnerTimerState((prevSpinner) =>
-        prevSpinner >= 100 ? 0 : prevSpinner + 10,
-      );
-    }, 800);
-
-    return () => {
-      clearInterval(timer);
-    };
+    getDerivatives();
   }, []);
 
-  useEffect(() => {
+  const getDerivatives = () => {
     backendAPIAxios
       .get("/derivatives", {
         headers: {
@@ -61,12 +59,31 @@ const Derivatives: React.FC<Props> = (
           return console.log("Failed to upload CSV");
         }
 
+        setDerivativesState(() => response.data.data);
+      })
+      .catch((e: AxiosError) => {
+        console.log(`Failed to upload CSV with error: ${e}`);
+      });
+  };
+
+  const getDerivative = () => {
+    backendAPIAxios
+      .get("/derivatives/single", {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`,
+        },
+      })
+      .then((response: AxiosResponse<IGetDerivativeResponse>) => {
+        if (!response.data.data) {
+          return console.log("Failed to upload CSV");
+        }
+
         setDerivativeState(() => response.data.data);
       })
       .catch((e: AxiosError) => {
         console.log(`Failed to upload CSV with error: ${e}`);
       });
-  }, []);
+  };
 
   const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -74,8 +91,6 @@ const Derivatives: React.FC<Props> = (
     const id = event.target.id;
     const fileReader = new FileReader();
     const file = event.target.files![0];
-
-    // console.log(file);
 
     fileReader.onload = () => {
       setCSVFilesState([...CSVFilesState, { id, file: fileReader.result }]);
@@ -104,8 +119,13 @@ const Derivatives: React.FC<Props> = (
       .then((response: AxiosResponse<IServerResponseData>) => {
         if (!response.data.message) {
           return console.log(
-            `Failed to upload CSV files because of error ${response.data.message}`,
+            `Failed to upload CSV files because of error ${response.data.message}`
           );
+        }
+
+        if (response.status === 200) {
+          getDerivatives();
+          getDerivative();
         }
       })
       .catch((e: AxiosError) => {
@@ -114,6 +134,7 @@ const Derivatives: React.FC<Props> = (
       .finally(() => {
         setSpinnerState(() => false);
         setWEXState(() => false);
+        setCSVFilesState(() => []);
       });
   };
 
@@ -139,10 +160,10 @@ const Derivatives: React.FC<Props> = (
   return (
     <DerivativesView
       iconName={props.iconName}
+      derivativesState={derivativesState}
       derivativeState={derivativeState}
       WEXState={WEXState}
       spinnerState={spinnerState}
-      spinnerTimerState={spinnerTimerState}
       openModalState={openModalState}
       handleModalOpen={handleModalOpen}
       handleModalClose={handleModalClose}

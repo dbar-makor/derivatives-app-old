@@ -172,7 +172,7 @@ body {
   &__text {
     display: flex;
     flex-direction: column;
-    width: 530px;
+    width: 540px;
 
     &--matchedRows {
       font-weight: 600;
@@ -287,7 +287,14 @@ body {
       color: #3e2f71;
     }
 
+    &--link {
+      display: flex;
+    }
+
     &--download {
+      position: absolute;
+      left: 750px;
+      bottom: 120px;
       height: 2.4vh;
       width: 2.4vh;
     }
