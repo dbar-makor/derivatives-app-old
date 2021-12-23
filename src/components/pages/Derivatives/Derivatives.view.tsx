@@ -1,5 +1,7 @@
 import React, { ChangeEvent } from "react";
 
+import moment from "moment";
+
 import icons from "../../../assets/icons";
 
 import Svg from "../../ui/Svg/Svg";
@@ -100,13 +102,16 @@ const DerivativesView: React.FC<Props> = (
             {props.derivativesState &&
               props.derivativesState.map((row) => (
                 <TableRow key={row.id}>
-                  <TableCell style={{ color: "#3E2F71", fontWeight: 700 }}>
+                  <TableCell
+                    style={{ color: "#3E2F71", fontWeight: 700 }}
+                    align="center"
+                  >
                     {row.username}
                   </TableCell>
                   <TableCell style={{ color: "#8a8a8a", fontWeight: 700 }}>
                     {row.date}
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell className={classes["hi"]} align="left">
                     <Svg className={classes["attachSvg"]} name="attach" />
                     <button
                       className={classes["downloadButton"]}
@@ -146,15 +151,19 @@ const DerivativesView: React.FC<Props> = (
                     style={{ color: "#3E2F71", fontWeight: 700 }}
                     align="center"
                   >
-                    {row.complete}
+                    {row.complete === 100 ? (
+                      <Svg name="complete" />
+                    ) : (
+                      `${row.complete}%`
+                    )}
                   </TableCell>
                   <TableCell align="left">
                     <Svg className={classes["attachSvg"]} name="attach" />
                     <button
                       className={classes["downloadButton"]}
-                      onClick={() => props.onDownload(row.derivatives)}
+                      onClick={() => props.onDownload(row.unresolved)}
                     >
-                      {row.derivatives}
+                      {row.unresolved}
                     </button>
                   </TableCell>
                 </TableRow>
@@ -410,25 +419,29 @@ const DerivativesView: React.FC<Props> = (
               </span>
             </div>
             <div className={classes["downloadFileContainer__box"]}>
-              <Svg name="attach" />
-              <span className={classes["downloadFileContainer__box--text"]}>
-                {!props.derivativeState?.derivatives ? (
+              {!props.derivativeState?.unresolved ? (
+                <span className={classes["downloadFileContainer__box--text"]}>
+                  <Svg
+                    className={classes["downloadFileContainer__box--text__svg"]}
+                    name="attach"
+                  />
                   <span style={{ fontWeight: 600 }}>unresolved.drv</span>
-                ) : (
-                  <div className={classes["downloadFileContainer__box--link"]}>
-                    <Svg name="attach" />
-                    <button
-                      className={classes["downloadButton"]}
-                      onClick={() =>
-                        props.onDownload(props.derivativeState!.derivatives)
-                      }
-                    >
-                      {props.derivativeState?.derivatives}
-                    </button>
-                  </div>
-                )}
-              </span>
-              {!props.derivativeState?.derivatives ? (
+                </span>
+              ) : (
+                <div className={classes["downloadFileContainer__box--link"]}>
+                  <Svg name="attach" />
+                  <button
+                    className={classes["downloadButton"]}
+                    onClick={() =>
+                      props.onDownload(props.derivativeState!.unresolved)
+                    }
+                  >
+                    {props.derivativeState?.unresolved}
+                  </button>
+                </div>
+              )}
+
+              {!props.derivativeState?.unresolved ? (
                 <Svg
                   className={classes["downloadFileContainer__box--download"]}
                   name="download"
@@ -437,7 +450,7 @@ const DerivativesView: React.FC<Props> = (
                 <button
                   className={classes["downloadButton"]}
                   onClick={() =>
-                    props.onDownload(props.derivativeState!.derivatives)
+                    props.onDownload(props.derivativeState!.unresolved)
                   }
                 >
                   <Svg

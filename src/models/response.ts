@@ -6,30 +6,29 @@ export interface IGetDerivativesResponse extends IServerResponseData {
     IDerivative,
     | "id"
     | "date"
+    | "username"
     | "wex"
     | "drv"
     | "matched"
     | "unmatched"
     | "unknown"
     | "complete"
-    | "derivatives"
-    | "username"
+    | "unresolved"
   >[];
 }
 
 export interface IGetDerivativeResponse extends IServerResponseData {
   readonly data?: Pick<
     IDerivative,
-    | "id"
     | "date"
+    | "username"
     | "wex"
     | "drv"
     | "matched"
     | "unmatched"
     | "unknown"
     | "complete"
-    | "derivatives"
-    | "username"
+    | "unresolved"
   >;
 }
 

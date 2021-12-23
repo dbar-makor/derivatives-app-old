@@ -283,8 +283,12 @@ body {
     border: 1px solid #8a8a8a;
 
     &--text {
-      margin: 0 550px 0 5px;
+      display: flex;
       color: #3e2f71;
+
+      &__svg {
+        margin-right: 6px;
+      }
     }
 
     &--link {
@@ -294,7 +298,7 @@ body {
     &--download {
       position: absolute;
       left: 750px;
-      bottom: 120px;
+      bottom: 118px;
       height: 2.4vh;
       width: 2.4vh;
     }
