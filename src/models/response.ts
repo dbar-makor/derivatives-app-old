@@ -11,7 +11,6 @@ export interface IGetDerivativesResponse extends IServerResponseData {
     | "drv"
     | "matched"
     | "unmatched"
-    | "unknown"
     | "complete"
     | "unresolved"
   >[];
@@ -26,7 +25,6 @@ export interface IGetDerivativeResponse extends IServerResponseData {
     | "drv"
     | "matched"
     | "unmatched"
-    | "unknown"
     | "complete"
     | "unresolved"
   >;

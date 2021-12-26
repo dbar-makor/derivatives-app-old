@@ -6,7 +6,6 @@ export interface IDerivative {
   readonly drv: string;
   readonly matched: number;
   readonly unmatched: number;
-  readonly unknown: number;
   readonly complete: number;
   readonly unresolved: string;
 }

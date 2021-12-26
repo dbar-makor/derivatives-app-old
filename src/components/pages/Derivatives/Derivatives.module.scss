@@ -122,6 +122,16 @@ body {
     }
   }
 
+  &__error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+    padding: 72px;
+    font-size: 2rem;
+    color: #e4461f;
+  }
+
   .addFileSvg {
     width: 6vh;
     height: 7.7vh;
@@ -175,31 +185,18 @@ body {
     width: 540px;
 
     &--matchedRows {
+      font-size: 1.3rem;
       font-weight: 600;
-      padding: 13.7px;
+      padding: 35.5px;
       color: #238d38;
       border-bottom: 1px solid #f3f3f3;
     }
 
     &--unmatchedRows {
+      font-size: 1.3rem;
       font-weight: 600;
-      padding: 13.7px;
+      padding: 35.5px;
       color: #e59813;
-      border-bottom: 1px solid #f3f3f3;
-    }
-
-    &--unknownErrors {
-      font-weight: 600;
-      padding: 13.7px;
-      color: #e4461f;
-      border-bottom: 1px solid #f3f3f3;
-    }
-
-    &--unresolved {
-      font-weight: 700;
-      color: #3e2f71;
-      padding: 13.7px;
-      background-color: #f3f3f3;
     }
   }
 
@@ -210,22 +207,10 @@ body {
     &--number {
       display: flex;
       justify-content: center;
+      font-size: 1.3rem;
       font-weight: 600;
-      padding: 13.7px;
+      padding: 35.5px;
       color: #3e2f71;
-
-      &:not(:last-child) {
-        border-bottom: 1px solid #f3f3f3;
-      }
-    }
-
-    &--unresolvedNumber {
-      display: flex;
-      justify-content: center;
-      font-weight: 600;
-      padding: 13.7px;
-      color: #3e2f71;
-      background-color: #f3f3f3;
 
       &:not(:last-child) {
         border-bottom: 1px solid #f3f3f3;
@@ -307,10 +292,6 @@ body {
 
 .divider {
   color: #3e3f71;
-}
-
-.attachSvg {
-  margin-right: 7px;
 }
 
 .downloadButton {

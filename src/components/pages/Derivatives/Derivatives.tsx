@@ -26,16 +26,13 @@ const Derivatives: React.FC<Props> = (
   const [derivativesState, setDerivativesState] = useState<
     IDerivative[] | undefined
   >(undefined);
-
   const [derivativeState, setDerivativeState] = useState<
     IDerivative | undefined
   >(undefined);
-
   const [WEXState, setWEXState] = useState<boolean>(false);
   const [spinnerState, setSpinnerState] = useState<boolean>(false);
-
+  const [uploadErrorState, setUploadErrorState] = useState<boolean>(false);
   const [openModalState, setOpenModalState] = useState<boolean>(false);
-
   const [CSVFilesState, setCSVFilesState] = useState<
     { id: string; file: string | ArrayBuffer | null }[]
   >([]);
@@ -117,10 +114,8 @@ const Derivatives: React.FC<Props> = (
         },
       })
       .then((response: AxiosResponse<IServerResponseData>) => {
-        if (!response.data.message) {
-          return console.log(
-            `Failed to upload CSV files because of error ${response.data.message}`
-          );
+        if (!response.data) {
+          return console.log("Failed to upload CSV");
         }
 
         if (response.status === 200) {
@@ -130,6 +125,10 @@ const Derivatives: React.FC<Props> = (
       })
       .catch((e: AxiosError) => {
         console.log(`Failed to upload CSV with error: ${e}`);
+        setUploadErrorState(() => true);
+        setTimeout(() => {
+          setUploadErrorState(() => false);
+        }, 2000);
       })
       .finally(() => {
         setSpinnerState(() => false);
@@ -142,7 +141,9 @@ const Derivatives: React.FC<Props> = (
     backendAPIAxios
       .get("/derivatives/download/" + fileName, {
         responseType: "blob",
-        headers: {},
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`,
+        },
       })
       .then((response: AxiosResponse) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -164,6 +165,7 @@ const Derivatives: React.FC<Props> = (
       derivativeState={derivativeState}
       WEXState={WEXState}
       spinnerState={spinnerState}
+      uploadErrorState={uploadErrorState}
       openModalState={openModalState}
       handleModalOpen={handleModalOpen}
       handleModalClose={handleModalClose}

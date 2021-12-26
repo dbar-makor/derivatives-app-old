@@ -27,6 +27,7 @@ interface Props {
   readonly derivativeState?: IDerivative;
   readonly WEXState: boolean;
   readonly spinnerState: boolean;
+  readonly uploadErrorState: boolean;
   readonly spinnerTimerState?: number;
   readonly openModalState: boolean;
   readonly handleModalOpen: () => void;
@@ -56,12 +57,16 @@ const DerivativesView: React.FC<Props> = (
       <nav className={classes["nav"]}>
         <div className={classes["innerNav"]}>
           <span className={classes["navHeader"]}>History</span>
-          <Button
-            className={classes["navLinkButton"]}
-            onClick={props.handleModalOpen}
-          >
-            NEW RECONCILIATION
-          </Button>
+          {!props.derivativesState ? (
+            ""
+          ) : (
+            <Button
+              className={classes["navLinkButton"]}
+              onClick={props.handleModalOpen}
+            >
+              NEW RECONCILIATION
+            </Button>
+          )}
         </div>
       </nav>
       <TableContainer component={Paper}>
@@ -86,9 +91,6 @@ const DerivativesView: React.FC<Props> = (
               </TableCell>
               <TableCell className={classes["tableCellHeader"]} align="center">
                 Unmatched
-              </TableCell>
-              <TableCell className={classes["tableCellHeader"]} align="center">
-                Unknown
               </TableCell>
               <TableCell className={classes["tableCellHeader"]} align="center">
                 Complete
@@ -142,23 +144,17 @@ const DerivativesView: React.FC<Props> = (
                     {row.unmatched}
                   </TableCell>
                   <TableCell
-                    style={{ color: "#E4461F", fontWeight: 700 }}
-                    align="center"
-                  >
-                    {row.unknown}
-                  </TableCell>
-                  <TableCell
                     style={{ color: "#3E2F71", fontWeight: 700 }}
                     align="center"
                   >
                     {row.complete === 100 ? (
-                      <Svg name="complete" />
+                      <Svg style={{ marginRight: 5 }} name="complete" />
                     ) : (
                       `${row.complete}%`
                     )}
                   </TableCell>
                   <TableCell align="left">
-                    <Svg className={classes["attachSvg"]} name="attach" />
+                    <Svg name="attach" />
                     <button
                       className={classes["downloadButton"]}
                       onClick={() => props.onDownload(row.unresolved)}
@@ -190,12 +186,46 @@ const DerivativesView: React.FC<Props> = (
                   After uploading files processing will start automaticaly
                 </span>
               </div>
-              <form
-                className={classes["uploadFilesContainer__form"]}
-                onSubmit={props.onSubmit}
-              >
-                <div className={classes["buttonContainer"]}>
-                  {!props.WEXState ? (
+              {!props.uploadErrorState ? (
+                <form
+                  className={classes["uploadFilesContainer__form"]}
+                  onSubmit={props.onSubmit}
+                >
+                  <div className={classes["buttonContainer"]}>
+                    {!props.WEXState ? (
+                      <Button className={classes["buttonContainer__button"]}>
+                        <label>
+                          <Svg
+                            className={classes["addFileSvg"]}
+                            name="addFile"
+                          />
+                          <input
+                            style={{ display: "none" }}
+                            onChange={props.onUpload}
+                            type="file"
+                            accept=".csv"
+                            id="WEX"
+                          />
+                        </label>
+                      </Button>
+                    ) : (
+                      <Button
+                        disabled
+                        className={classes["buttonContainer__buttonUploaded"]}
+                      >
+                        <label>
+                          <Svg
+                            className={classes["addFileSvg"]}
+                            name="fileUploaded"
+                          />
+                        </label>
+                      </Button>
+                    )}
+                    <span className={classes["buttonContainer__text"]}>
+                      WEX
+                    </span>
+                  </div>
+                  <div className={classes["buttonContainer"]}>
                     <Button className={classes["buttonContainer__button"]}>
                       <label>
                         <Svg className={classes["addFileSvg"]} name="addFile" />
@@ -204,41 +234,20 @@ const DerivativesView: React.FC<Props> = (
                           onChange={props.onUpload}
                           type="file"
                           accept=".csv"
-                          id="WEX"
+                          id={"DRV"}
                         />
                       </label>
                     </Button>
-                  ) : (
-                    <Button
-                      disabled
-                      className={classes["buttonContainer__buttonUploaded"]}
-                    >
-                      <label>
-                        <Svg
-                          className={classes["addFileSvg"]}
-                          name="fileUploaded"
-                        />
-                      </label>
-                    </Button>
-                  )}
-                  <span className={classes["buttonContainer__text"]}>WEX</span>
+                    <span className={classes["buttonContainer__text"]}>
+                      DRV
+                    </span>
+                  </div>
+                </form>
+              ) : (
+                <div className={classes["uploadFilesContainer__error"]}>
+                  Error uploading files - Please try again
                 </div>
-                <div className={classes["buttonContainer"]}>
-                  <Button className={classes["buttonContainer__button"]}>
-                    <label>
-                      <Svg className={classes["addFileSvg"]} name="addFile" />
-                      <input
-                        style={{ display: "none" }}
-                        onChange={props.onUpload}
-                        type="file"
-                        accept=".csv"
-                        id={"DRV"}
-                      />
-                    </label>
-                  </Button>
-                  <span className={classes["buttonContainer__text"]}>DRV</span>
-                </div>
-              </form>
+              )}
             </div>
           ) : (
             <div className={classes["uploadFilesSpinnerContainer"]}>
@@ -258,7 +267,7 @@ const DerivativesView: React.FC<Props> = (
               <span
                 className={classes["derivativesContainer__headers--content"]}
               >
-                Unresolved is summary of Unmatched rows and Unknown errors
+                Summary of Matched and Unmatched rows
               </span>
             </div>
             <div className={classes["derivativesTableContainer"]}>
@@ -278,20 +287,6 @@ const DerivativesView: React.FC<Props> = (
                   >
                     Unmatched Rows
                   </div>
-                  <div
-                    className={
-                      classes["derivativesTableContainer__text--unknownErrors"]
-                    }
-                  >
-                    Unknown Errors
-                  </div>
-                  <div
-                    className={
-                      classes["derivativesTableContainer__text--unresolved"]
-                    }
-                  >
-                    Unresolved
-                  </div>
                 </div>
                 <div className={classes["derivativesTableContainer__data"]}>
                   <div
@@ -309,7 +304,7 @@ const DerivativesView: React.FC<Props> = (
                       <div className={classes["uploadFilesSpinnerContainer"]}>
                         <CircularProgress
                           style={{ color: "#3E2F72" }}
-                          size={21.4}
+                          size={27.7}
                         />
                       </div>
                     )}
@@ -329,45 +324,7 @@ const DerivativesView: React.FC<Props> = (
                       <div className={classes["uploadFilesSpinnerContainer"]}>
                         <CircularProgress
                           style={{ color: "#3E2F72" }}
-                          size={21.2}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div
-                    className={
-                      classes["derivativesTableContainer__data--number"]
-                    }
-                  >
-                    {!props.spinnerState ? (
-                      <React.Fragment>
-                        {!props.derivativeState?.unknown
-                          ? "0"
-                          : props.derivativeState?.unknown}
-                      </React.Fragment>
-                    ) : (
-                      <div className={classes["uploadFilesSpinnerContainer"]}>
-                        <CircularProgress
-                          style={{ color: "#3E2F72" }}
-                          size={21.2}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  <div
-                    className={
-                      classes[
-                        "derivativesTableContainer__data--unresolvedNumber"
-                      ]
-                    }
-                  >
-                    {!props.spinnerState ? (
-                      <React.Fragment>0</React.Fragment>
-                    ) : (
-                      <div className={classes["uploadFilesSpinnerContainer"]}>
-                        <CircularProgress
-                          style={{ color: "#3E2F72" }}
-                          size={21.2}
+                          size={27.7}
                         />
                       </div>
                     )}

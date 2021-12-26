@@ -30,8 +30,6 @@ const Login: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log(usernameState + " f " + passwordState);
-
     backendAPIAxios
       .post("/auth/login", {
         username: usernameState,
