@@ -23,19 +23,24 @@ interface Props {
 const Derivatives: React.FC<Props> = (
   props: React.PropsWithChildren<Props>
 ) => {
+  const [dateState, setDateState] = useState<Date | null>(new Date());
   const [derivativesState, setDerivativesState] = useState<
     IDerivative[] | undefined
   >(undefined);
   const [derivativeState, setDerivativeState] = useState<
     IDerivative | undefined
   >(undefined);
+  const [CSVFilesState, setCSVFilesState] = useState<
+    { id: string; file: string | ArrayBuffer | null }[]
+  >([]);
+
   const [WEXState, setWEXState] = useState<boolean>(false);
   const [spinnerState, setSpinnerState] = useState<boolean>(false);
   const [uploadErrorState, setUploadErrorState] = useState<boolean>(false);
   const [openModalState, setOpenModalState] = useState<boolean>(false);
-  const [CSVFilesState, setCSVFilesState] = useState<
-    { id: string; file: string | ArrayBuffer | null }[]
-  >([]);
+  const [disableFloorBrokersSelectState, setdisableFloorBrokersSelectState] =
+    useState<boolean>(true);
+  const [submitState, setSubmitState] = useState<boolean>(false);
 
   const handleModalOpen = () => setOpenModalState(true);
   const handleModalClose = () => setOpenModalState(false);

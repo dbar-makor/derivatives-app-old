@@ -52,39 +52,32 @@ body {
 }
 
 .headers {
-  display: flex;
-  padding: 0 307px;
-
   &__text {
     color: #8a8a8a;
     text-align: left;
+  }
+}
 
-    &:not(:last-child) {
-      margin-right: 20px;
-    }
+.uploadFiles {
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #222246;
+  }
+
+  &__content {
+    margin-top: 3px;
+    color: #8a8a8a;
   }
 }
 
 .uploadFilesContainer {
   display: flex;
   flex-direction: column;
-  margin-top: 25px;
-
-  &__headers {
-    display: flex;
-    flex-direction: column;
-
-    &--header {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #222246;
-    }
-
-    &--content {
-      margin-top: 3px;
-      color: #8a8a8a;
-    }
-  }
+  margin-top: 2px;
 
   &__form {
     display: flex;
@@ -142,6 +135,7 @@ body {
 .uploadFilesSpinnerContainer {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .derivativesContainer {
@@ -168,13 +162,13 @@ body {
 
 .derivativesTableContainer {
   display: flex;
-  margin-bottom: 41px;
+  margin-bottom: 35px;
 
   &__table {
     display: flex;
     justify-content: space-between;
     width: 575px;
-    height: 198px;
+    height: 274px;
     margin-top: 24px;
     border: 1px solid #8a8a8a;
   }
@@ -182,21 +176,16 @@ body {
   &__text {
     display: flex;
     flex-direction: column;
-    width: 540px;
+    width: 560px;
 
     &--matchedRows {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       font-weight: 600;
-      padding: 35.5px;
-      color: #238d38;
-      border-bottom: 1px solid #f3f3f3;
-    }
+      padding: 5px;
 
-    &--unmatchedRows {
-      font-size: 1.3rem;
-      font-weight: 600;
-      padding: 35.5px;
-      color: #e59813;
+      &:not(:last-child) {
+        border-bottom: 1px solid #f3f3f3;
+      }
     }
   }
 
@@ -207,10 +196,9 @@ body {
     &--number {
       display: flex;
       justify-content: center;
-      font-size: 1.3rem;
+      padding: 5px;
+      font-size: 1.1rem;
       font-weight: 600;
-      padding: 35.5px;
-      color: #3e2f71;
 
       &:not(:last-child) {
         border-bottom: 1px solid #f3f3f3;
@@ -224,17 +212,22 @@ body {
     justify-content: center;
     align-items: center;
     width: 200px;
-    height: 198px;
+    height: 274px;
     margin-top: 24px;
     border: 1px solid #8a8a8a;
 
     &--text {
-      font-size: 1.2rem;
+      font-size: 2rem;
       color: #8a8a8a;
     }
 
     &--percentage {
-      font-size: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-left: 10px;
+      font-size: 3.5rem;
       color: #3e2f71;
     }
   }
@@ -243,7 +236,6 @@ body {
 .downloadFileContainer {
   display: flex;
   flex-direction: column;
-  margin-top: 25px;
 
   &__headers {
     display: flex;
@@ -283,7 +275,7 @@ body {
     &--download {
       position: absolute;
       left: 750px;
-      bottom: 118px;
+      bottom: 100px;
       height: 2.4vh;
       width: 2.4vh;
     }

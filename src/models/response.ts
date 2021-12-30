@@ -9,9 +9,9 @@ export interface IGetDerivativesResponse extends IServerResponseData {
     | "username"
     | "wex"
     | "drv"
-    | "matched"
-    | "unmatched"
-    | "complete"
+    | "matchedCount"
+    | "matchedSumPercentage"
+    | "unmatchedCount"
     | "unresolved"
   >[];
 }
@@ -19,13 +19,17 @@ export interface IGetDerivativesResponse extends IServerResponseData {
 export interface IGetDerivativeResponse extends IServerResponseData {
   readonly data?: Pick<
     IDerivative,
-    | "date"
-    | "username"
     | "wex"
-    | "drv"
-    | "matched"
-    | "unmatched"
-    | "complete"
+    | "username"
+    | "totalCount"
+    | "totalCharge"
+    | "matchedCount"
+    | "matchSumCharge"
+    | "matchedSumPercentage"
+    | "unmatchedCount"
+    | "unmatchedGroupCount"
+    | "unmatchedSumCharge"
+    | "unmatchedSumPercentage"
     | "unresolved"
   >;
 }
@@ -35,4 +39,10 @@ export interface ILoginResponse extends IServerResponseData {
     token: string;
     username: string;
   }>;
+}
+
+export interface IGetFloorBrokersResponse {
+  readonly id: number;
+  readonly name: string;
+  readonly company: string;
 }

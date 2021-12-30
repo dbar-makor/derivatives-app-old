@@ -1,7 +1,5 @@
 import React, { ChangeEvent } from "react";
 
-import moment from "moment";
-
 import icons from "../../../assets/icons";
 
 import Svg from "../../ui/Svg/Svg";
@@ -17,6 +15,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import classes from "./Derivatives.module.scss";
 import { IDerivative } from "../../../models/derivatives";
@@ -126,7 +125,7 @@ const DerivativesView: React.FC<Props> = (
                     <Svg className={classes["attachSvg"]} name="attach" />
                     <button
                       className={classes["downloadButton"]}
-                      onClick={() => props.onDownload(row.drv)}
+                      onClick={() => props.onDownload(row.drv!)}
                     >
                       {row.drv}
                     </button>
@@ -135,22 +134,22 @@ const DerivativesView: React.FC<Props> = (
                     style={{ color: "#238D38", fontWeight: 700 }}
                     align="center"
                   >
-                    {row.matched}
+                    {row.matchedCount}
                   </TableCell>
                   <TableCell
                     style={{ color: "#E59813", fontWeight: 700 }}
                     align="center"
                   >
-                    {row.unmatched}
+                    {row.unmatchedCount}
                   </TableCell>
                   <TableCell
                     style={{ color: "#3E2F71", fontWeight: 700 }}
                     align="center"
                   >
-                    {row.complete === 100 ? (
+                    {row.matchedSumPercentage === 100 ? (
                       <Svg style={{ marginRight: 5 }} name="complete" />
                     ) : (
-                      `${row.complete}%`
+                      `${row.matchedSumPercentage}%`
                     )}
                   </TableCell>
                   <TableCell align="left">
@@ -172,20 +171,17 @@ const DerivativesView: React.FC<Props> = (
           <span className={classes["modalHeader"]}>
             Derivatives reconciliation
           </span>
+          <div className={classes["uploadFiles"]}>
+            <span className={classes["uploadFiles__header"]}>
+              1. Upload Files
+            </span>
+            <span className={classes["uploadFiles__content"]}>
+              After uploading files processing will start automaticaly
+            </span>
+          </div>
           {!props.spinnerState ? (
             <div className={classes["uploadFilesContainer"]}>
-              <div className={classes["uploadFilesContainer__headers"]}>
-                <span
-                  className={classes["uploadFilesContainer__headers--header"]}
-                >
-                  1. Upload Files
-                </span>
-                <span
-                  className={classes["uploadFilesContainer__headers--content"]}
-                >
-                  After uploading files processing will start automaticaly
-                </span>
-              </div>
+              <div className={classes["uploadFilesContainer__headers"]}></div>
               {!props.uploadErrorState ? (
                 <form
                   className={classes["uploadFilesContainer__form"]}
@@ -252,11 +248,12 @@ const DerivativesView: React.FC<Props> = (
           ) : (
             <div className={classes["uploadFilesSpinnerContainer"]}>
               <CircularProgress
-                style={{ color: "#3E2F72", padding: 68 }}
-                size={150}
+                style={{ color: "#3E2F72", padding: 38 }}
+                size={140}
               />
             </div>
           )}
+
           <div className={classes["derivativesContainer"]}>
             <div className={classes["derivativesContainer__headers"]}>
               <span
@@ -267,7 +264,7 @@ const DerivativesView: React.FC<Props> = (
               <span
                 className={classes["derivativesContainer__headers--content"]}
               >
-                Summary of Matched and Unmatched rows
+                Summary after reconciliation
               </span>
             </div>
             <div className={classes["derivativesTableContainer"]}>
@@ -278,14 +275,62 @@ const DerivativesView: React.FC<Props> = (
                       classes["derivativesTableContainer__text--matchedRows"]
                     }
                   >
-                    Matched Rows
+                    Total Count
                   </div>
                   <div
                     className={
-                      classes["derivativesTableContainer__text--unmatchedRows"]
+                      classes["derivativesTableContainer__text--matchedRows"]
                     }
                   >
-                    Unmatched Rows
+                    Total Charge
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__text--matchedRows"]
+                    }
+                    style={{ color: "#238d38" }}
+                  >
+                    Match Count
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__text--matchedRows"]
+                    }
+                    style={{ color: "#238d38" }}
+                  >
+                    Matched Sum Charge
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__text--matchedRows"]
+                    }
+                    style={{ color: "#e59813" }}
+                  >
+                    Unmatched Count
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__text--matchedRows"]
+                    }
+                    style={{ color: "#e59813" }}
+                  >
+                    Unmatched Group Count
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__text--matchedRows"]
+                    }
+                    style={{ color: "#e59813" }}
+                  >
+                    Unmatched Sum Charge
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__text--matchedRows"]
+                    }
+                    style={{ color: "#e59813" }}
+                  >
+                    Unmatch Charge Percentage
                   </div>
                 </div>
                 <div className={classes["derivativesTableContainer__data"]}>
@@ -294,51 +339,82 @@ const DerivativesView: React.FC<Props> = (
                       classes["derivativesTableContainer__data--number"]
                     }
                   >
-                    {!props.spinnerState ? (
-                      <React.Fragment>
-                        {!props.derivativeState?.matched
-                          ? "0"
-                          : props.derivativeState?.matched}
-                      </React.Fragment>
-                    ) : (
-                      <div className={classes["uploadFilesSpinnerContainer"]}>
-                        <CircularProgress
-                          style={{ color: "#3E2F72" }}
-                          size={27.7}
-                        />
-                      </div>
-                    )}
+                    {!props.derivativeState?.totalCount
+                      ? "0"
+                      : props.derivativeState.totalCount}
                   </div>
                   <div
                     className={
                       classes["derivativesTableContainer__data--number"]
                     }
                   >
-                    {!props.spinnerState ? (
-                      <React.Fragment>
-                        {!props.derivativeState?.unmatched
-                          ? "0"
-                          : props.derivativeState?.unmatched}
-                      </React.Fragment>
-                    ) : (
-                      <div className={classes["uploadFilesSpinnerContainer"]}>
-                        <CircularProgress
-                          style={{ color: "#3E2F72" }}
-                          size={27.7}
-                        />
-                      </div>
-                    )}
+                    {!props.derivativeState?.totalCharge
+                      ? "0"
+                      : props.derivativeState.totalCharge}
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__data--number"]
+                    }
+                    style={{ color: "#238d38" }}
+                  >
+                    {!props.derivativeState?.matchedCount
+                      ? "0"
+                      : props.derivativeState.matchedCount}
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__data--number"]
+                    }
+                    style={{ color: "#238d38" }}
+                  >
+                    {!props.derivativeState?.matchSumCharge
+                      ? "0"
+                      : props.derivativeState.matchSumCharge}
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__data--number"]
+                    }
+                    style={{ color: "#e59813" }}
+                  >
+                    {!props.derivativeState?.unmatchedCount
+                      ? "0"
+                      : props.derivativeState.unmatchedCount}
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__data--number"]
+                    }
+                    style={{ color: "#e59813" }}
+                  >
+                    {!props.derivativeState?.unmatchedGroupCount
+                      ? "0"
+                      : props.derivativeState.unmatchedGroupCount}
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__data--number"]
+                    }
+                    style={{ color: "#e59813" }}
+                  >
+                    {!props.derivativeState?.unmatchedSumCharge
+                      ? "0"
+                      : props.derivativeState.unmatchedSumCharge}
+                  </div>
+                  <div
+                    className={
+                      classes["derivativesTableContainer__data--number"]
+                    }
+                    style={{ color: "#e59813" }}
+                  >
+                    {!props.derivativeState?.unmatchedSumPercentage
+                      ? "0"
+                      : `${props.derivativeState.unmatchedSumPercentage}%`}
                   </div>
                 </div>
               </div>
               <div className={classes["derivativesTableContainer__calculator"]}>
-                <div
-                  className={
-                    classes["derivativesTableContainer__calculator--text"]
-                  }
-                >
-                  Complete
-                </div>
                 <div
                   className={
                     classes["derivativesTableContainer__calculator--percentage"]
@@ -346,16 +422,33 @@ const DerivativesView: React.FC<Props> = (
                 >
                   {!props.spinnerState ? (
                     <React.Fragment>
-                      {!props.derivativeState?.complete
-                        ? "0%"
-                        : +props.derivativeState?.complete + "%"}
+                      {!props.derivativeState?.matchedSumPercentage ? (
+                        <span>-</span>
+                      ) : (
+                        <div>
+                          {+props.derivativeState.matchedSumPercentage + "%"}
+                        </div>
+                      )}
+                      <div
+                        className={
+                          classes["derivativesTableContainer__calculator--text"]
+                        }
+                      >
+                        Completed
+                      </div>
                     </React.Fragment>
                   ) : (
                     <div className={classes["uploadFilesSpinnerContainer"]}>
-                      <CircularProgress
-                        style={{ color: "#3E2F72", marginTop: 15 }}
-                        size={50}
-                      />
+                      <div
+                        className={
+                          classes["derivativesTableContainer__calculator--text"]
+                        }
+                      >
+                        Processing
+                      </div>
+                      <Box sx={{ width: "95%", marginTop: 1 }}>
+                        <LinearProgress color="inherit" />
+                      </Box>
                     </div>
                   )}
                 </div>
