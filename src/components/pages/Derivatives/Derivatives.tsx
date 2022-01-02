@@ -4,13 +4,16 @@ import { AxiosResponse, AxiosError } from "axios";
 
 import { backendAPIAxios } from "../../../utils/http";
 
+import { SelectChangeEvent } from "@mui/material";
+
 import { IDerivative } from "../../../models/derivatives";
+import { IServerResponseData } from "../../../models/shared/response";
 
 import {
   IGetDerivativeResponse,
   IGetDerivativesResponse,
+  IGetFloorBrokersResponse,
 } from "../../../models/response";
-import { IServerResponseData } from "../../../models/shared/response";
 
 import icons from "../../../assets/icons";
 
@@ -23,7 +26,6 @@ interface Props {
 const Derivatives: React.FC<Props> = (
   props: React.PropsWithChildren<Props>
 ) => {
-  const [dateState, setDateState] = useState<Date | null>(new Date());
   const [derivativesState, setDerivativesState] = useState<
     IDerivative[] | undefined
   >(undefined);
@@ -38,16 +40,45 @@ const Derivatives: React.FC<Props> = (
   const [spinnerState, setSpinnerState] = useState<boolean>(false);
   const [uploadErrorState, setUploadErrorState] = useState<boolean>(false);
   const [openModalState, setOpenModalState] = useState<boolean>(false);
+  const [floorBrokersDataState, setFloorBrokersDataState] = useState<
+    IGetFloorBrokersResponse[] | undefined
+  >([]);
+  const [floorBrokerSelectState, setFloorBrokersSelectState] =
+    useState<string>("");
   const [disableFloorBrokersSelectState, setdisableFloorBrokersSelectState] =
     useState<boolean>(true);
-  const [submitState, setSubmitState] = useState<boolean>(false);
 
   const handleModalOpen = () => setOpenModalState(true);
   const handleModalClose = () => setOpenModalState(false);
+  const floorBrokersStateChangeHandler = (event: SelectChangeEvent) => {
+    setFloorBrokersSelectState(event.target.value as string);
+  };
 
   useEffect(() => {
     getDerivatives();
+    getFloorBrokers();
   }, []);
+
+  const getFloorBrokers = async () => {
+    await backendAPIAxios
+      .get(
+        `${process.env.REACT_APP_MAKOR_X_URL}${process.env.REACT_APP_MAKOR_X_API_KEY}`
+      )
+      .then((response: AxiosResponse<IGetFloorBrokersResponse[]>) => {
+        if (!response.data) {
+          return alert("Failed to upload CSV");
+        }
+
+        if (response.status === 200) {
+          setdisableFloorBrokersSelectState(() => false);
+        }
+
+        setFloorBrokersDataState(() => response.data);
+      })
+      .catch((e: AxiosError) => {
+        alert(`Failed to upload CSV with error: ${e}`);
+      });
+  };
 
   const getDerivatives = () => {
     backendAPIAxios
@@ -112,12 +143,18 @@ const Derivatives: React.FC<Props> = (
   const onSubmit = () => {
     setSpinnerState(() => true);
 
+    console.log(floorBrokerSelectState);
+
     backendAPIAxios
-      .post("/derivatives", CSVFilesState, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`,
-        },
-      })
+      .post(
+        "/derivatives",
+        { files: CSVFilesState, floorBrokerId: floorBrokerSelectState },
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`,
+          },
+        }
+      )
       .then((response: AxiosResponse<IServerResponseData>) => {
         if (!response.data) {
           return console.log("Failed to upload CSV");
@@ -177,6 +214,10 @@ const Derivatives: React.FC<Props> = (
       onUpload={onUpload}
       onSubmit={onSubmit}
       onDownload={onDownload}
+      floorBrokerSelectState={floorBrokerSelectState}
+      floorBrokersDataState={floorBrokersDataState}
+      floorBrokersSelectChangeHandler={floorBrokersStateChangeHandler}
+      disableFloorBrokersSelectState={disableFloorBrokersSelectState}
     >
       {props.children}
     </DerivativesView>

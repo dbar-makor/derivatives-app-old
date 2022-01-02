@@ -15,3 +15,9 @@ export interface IDerivative {
   readonly matchedSumPercentage?: number;
   readonly unresolved: string;
 }
+
+export interface IFloorBroker {
+  readonly id: number;
+  readonly name: string;
+  readonly company: string;
+}

@@ -15,10 +15,17 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import ListSubheader from "@mui/material/ListSubheader";
 import LinearProgress from "@mui/material/LinearProgress";
 
+import { IDerivative, IFloorBroker } from "../../../models/derivatives";
+import { groupByCompany } from "../../../utils/derivatives";
+
 import classes from "./Derivatives.module.scss";
-import { IDerivative } from "../../../models/derivatives";
 
 interface Props {
   readonly iconName?: keyof typeof icons;
@@ -34,6 +41,10 @@ interface Props {
   readonly onUpload: (value: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: () => void;
   onDownload: (event: string) => void;
+  readonly floorBrokersSelectChangeHandler: (event: SelectChangeEvent) => void;
+  readonly floorBrokersDataState?: IFloorBroker[];
+  readonly disableFloorBrokersSelectState: boolean;
+  readonly floorBrokerSelectState: string;
 }
 
 const DerivativesView: React.FC<Props> = (
@@ -176,19 +187,93 @@ const DerivativesView: React.FC<Props> = (
               1. Upload Files
             </span>
             <span className={classes["uploadFiles__content"]}>
-              After uploading files processing will start automaticaly
+              Choose floor broker and Upload files, processing will start
+              automaticaly
             </span>
           </div>
           {!props.spinnerState ? (
             <div className={classes["uploadFilesContainer"]}>
               <div className={classes["uploadFilesContainer__headers"]}></div>
               {!props.uploadErrorState ? (
-                <form
-                  className={classes["uploadFilesContainer__form"]}
-                  onSubmit={props.onSubmit}
-                >
-                  <div className={classes["buttonContainer"]}>
-                    {!props.WEXState ? (
+                <React.Fragment>
+                  <Box sx={{ minWidth: 170, maxWidth: 270.2 }}>
+                    <FormControl fullWidth>
+                      <InputLabel id="floorBrolersSelectLabel">
+                        Floor Broker
+                      </InputLabel>
+                      {props.disableFloorBrokersSelectState ? (
+                        <Select
+                          disabled
+                          label="Floor Broker"
+                          defaultValue=""
+                        ></Select>
+                      ) : (
+                        <Select
+                          labelId="floorBrolersSelectLabel"
+                          id="floorBrolersSelect"
+                          defaultValue=""
+                          value={props.floorBrokerSelectState}
+                          label="Floor Broker"
+                          onChange={props.floorBrokersSelectChangeHandler}
+                        >
+                          {groupByCompany(props.floorBrokersDataState!).map(
+                            ([company, list]) => {
+                              const subItems: IFloorBroker[] = list.map(
+                                (element: IFloorBroker) => (
+                                  <MenuItem value={element.id}>
+                                    {element.name}
+                                  </MenuItem>
+                                )
+                              );
+                              return [
+                                <ListSubheader>{company}</ListSubheader>,
+                                ...subItems,
+                              ];
+                            }
+                          )}
+                        </Select>
+                      )}
+                    </FormControl>
+                  </Box>
+                  <form
+                    className={classes["uploadFilesContainer__form"]}
+                    onSubmit={props.onSubmit}
+                  >
+                    <div className={classes["buttonContainer"]}>
+                      {!props.WEXState ? (
+                        <Button className={classes["buttonContainer__button"]}>
+                          <label>
+                            <Svg
+                              className={classes["addFileSvg"]}
+                              name="addFile"
+                            />
+                            <input
+                              style={{ display: "none" }}
+                              onChange={props.onUpload}
+                              type="file"
+                              accept=".csv"
+                              id="WEX"
+                            />
+                          </label>
+                        </Button>
+                      ) : (
+                        <Button
+                          disabled
+                          className={classes["buttonContainer__buttonUploaded"]}
+                        >
+                          <label>
+                            <Svg
+                              className={classes["addFileSvg"]}
+                              name="fileUploaded"
+                            />
+                          </label>
+                        </Button>
+                      )}
+                      <span className={classes["buttonContainer__text"]}>
+                        WEX
+                      </span>
+                    </div>
+                    <div className={classes["buttonContainer"]}>
                       <Button className={classes["buttonContainer__button"]}>
                         <label>
                           <Svg
@@ -200,45 +285,16 @@ const DerivativesView: React.FC<Props> = (
                             onChange={props.onUpload}
                             type="file"
                             accept=".csv"
-                            id="WEX"
+                            id={"DRV"}
                           />
                         </label>
                       </Button>
-                    ) : (
-                      <Button
-                        disabled
-                        className={classes["buttonContainer__buttonUploaded"]}
-                      >
-                        <label>
-                          <Svg
-                            className={classes["addFileSvg"]}
-                            name="fileUploaded"
-                          />
-                        </label>
-                      </Button>
-                    )}
-                    <span className={classes["buttonContainer__text"]}>
-                      WEX
-                    </span>
-                  </div>
-                  <div className={classes["buttonContainer"]}>
-                    <Button className={classes["buttonContainer__button"]}>
-                      <label>
-                        <Svg className={classes["addFileSvg"]} name="addFile" />
-                        <input
-                          style={{ display: "none" }}
-                          onChange={props.onUpload}
-                          type="file"
-                          accept=".csv"
-                          id={"DRV"}
-                        />
-                      </label>
-                    </Button>
-                    <span className={classes["buttonContainer__text"]}>
-                      DRV
-                    </span>
-                  </div>
-                </form>
+                      <span className={classes["buttonContainer__text"]}>
+                        DRV
+                      </span>
+                    </div>
+                  </form>
+                </React.Fragment>
               ) : (
                 <div className={classes["uploadFilesContainer__error"]}>
                   Error uploading files - Please try again

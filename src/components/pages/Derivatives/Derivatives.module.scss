@@ -75,15 +75,11 @@ body {
 }
 
 .uploadFilesContainer {
-  display: flex;
-  flex-direction: column;
-  margin-top: 2px;
-
   &__form {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 24px;
+    margin-top: 14px;
 
     .buttonContainer {
       display: flex;
@@ -92,7 +88,7 @@ body {
       align-items: center;
 
       &:not(:last-child) {
-        margin-right: 60px;
+        margin-right: 45px;
       }
 
       &__button {
@@ -134,6 +130,7 @@ body {
 
 .uploadFilesSpinnerContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -275,7 +272,7 @@ body {
     &--download {
       position: absolute;
       left: 750px;
-      bottom: 100px;
+      bottom: 46px;
       height: 2.4vh;
       width: 2.4vh;
     }
