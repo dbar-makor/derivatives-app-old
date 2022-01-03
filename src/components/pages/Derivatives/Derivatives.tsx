@@ -37,13 +37,14 @@ const Derivatives: React.FC<Props> = (
   >([]);
 
   const [WEXState, setWEXState] = useState<boolean>(false);
+  const [DRVState, setDRVState] = useState<boolean>(false);
   const [spinnerState, setSpinnerState] = useState<boolean>(false);
   const [uploadErrorState, setUploadErrorState] = useState<boolean>(false);
   const [openModalState, setOpenModalState] = useState<boolean>(false);
   const [floorBrokersDataState, setFloorBrokersDataState] = useState<
     IGetFloorBrokersResponse[] | undefined
   >([]);
-  const [floorBrokerSelectState, setFloorBrokersSelectState] =
+  const [floorBrokerSelectState, setFloorBrokerSelectState] =
     useState<string>("");
   const [disableFloorBrokersSelectState, setdisableFloorBrokersSelectState] =
     useState<boolean>(true);
@@ -51,7 +52,7 @@ const Derivatives: React.FC<Props> = (
   const handleModalOpen = () => setOpenModalState(true);
   const handleModalClose = () => setOpenModalState(false);
   const floorBrokersStateChangeHandler = (event: SelectChangeEvent) => {
-    setFloorBrokersSelectState(event.target.value as string);
+    setFloorBrokerSelectState(event.target.value as string);
   };
 
   useEffect(() => {
@@ -125,25 +126,30 @@ const Derivatives: React.FC<Props> = (
     const fileReader = new FileReader();
     const file = event.target.files![0];
 
+    if (id === "WEX") {
+      setWEXState(() => true);
+    }
+
+    if (id === "DRV") {
+      setDRVState(() => true);
+    }
+
     fileReader.onload = () => {
       setCSVFilesState([...CSVFilesState, { id, file: fileReader.result }]);
     };
 
     fileReader.readAsDataURL(file);
-
-    setWEXState(() => true);
   };
 
   useEffect(() => {
-    if (CSVFilesState.length === 2) {
+    if (CSVFilesState.length === 2 && floorBrokerSelectState !== "") {
       onSubmit();
     }
-  }, [CSVFilesState]);
+  }, [CSVFilesState, floorBrokerSelectState]);
 
   const onSubmit = () => {
     setSpinnerState(() => true);
-
-    console.log(floorBrokerSelectState);
+    setDerivativeState(() => undefined);
 
     backendAPIAxios
       .post(
@@ -175,7 +181,9 @@ const Derivatives: React.FC<Props> = (
       .finally(() => {
         setSpinnerState(() => false);
         setWEXState(() => false);
+        setDRVState(() => false);
         setCSVFilesState(() => []);
+        setFloorBrokerSelectState(() => "");
       });
   };
 
@@ -206,6 +214,7 @@ const Derivatives: React.FC<Props> = (
       derivativesState={derivativesState}
       derivativeState={derivativeState}
       WEXState={WEXState}
+      DRVState={DRVState}
       spinnerState={spinnerState}
       uploadErrorState={uploadErrorState}
       openModalState={openModalState}

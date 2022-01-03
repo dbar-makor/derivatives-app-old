@@ -32,6 +32,7 @@ interface Props {
   readonly derivativesState?: IDerivative[];
   readonly derivativeState?: IDerivative;
   readonly WEXState: boolean;
+  readonly DRVState: boolean;
   readonly spinnerState: boolean;
   readonly uploadErrorState: boolean;
   readonly spinnerTimerState?: number;
@@ -188,7 +189,7 @@ const DerivativesView: React.FC<Props> = (
             </span>
             <span className={classes["uploadFiles__content"]}>
               Choose floor broker and Upload files, processing will start
-              automaticaly
+              automatically
             </span>
           </div>
           {!props.spinnerState ? (
@@ -216,7 +217,7 @@ const DerivativesView: React.FC<Props> = (
                           label="Floor Broker"
                           onChange={props.floorBrokersSelectChangeHandler}
                         >
-                          {groupByCompany(props.floorBrokersDataState!).map(
+                          {/* {groupByCompany(props.floorBrokersDataState!).map(
                             ([company, list]) => {
                               const subItems: IFloorBroker[] = list.map(
                                 (element: IFloorBroker) => (
@@ -230,7 +231,8 @@ const DerivativesView: React.FC<Props> = (
                                 ...subItems,
                               ];
                             }
-                          )}
+                          )} */}
+                          <MenuItem value={1}>ff</MenuItem>
                         </Select>
                       )}
                     </FormControl>
@@ -274,21 +276,35 @@ const DerivativesView: React.FC<Props> = (
                       </span>
                     </div>
                     <div className={classes["buttonContainer"]}>
-                      <Button className={classes["buttonContainer__button"]}>
-                        <label>
-                          <Svg
-                            className={classes["addFileSvg"]}
-                            name="addFile"
-                          />
-                          <input
-                            style={{ display: "none" }}
-                            onChange={props.onUpload}
-                            type="file"
-                            accept=".csv"
-                            id={"DRV"}
-                          />
-                        </label>
-                      </Button>
+                      {!props.DRVState ? (
+                        <Button className={classes["buttonContainer__button"]}>
+                          <label>
+                            <Svg
+                              className={classes["addFileSvg"]}
+                              name="addFile"
+                            />
+                            <input
+                              style={{ display: "none" }}
+                              onChange={props.onUpload}
+                              type="file"
+                              accept=".csv"
+                              id="DRV"
+                            />
+                          </label>
+                        </Button>
+                      ) : (
+                        <Button
+                          disabled
+                          className={classes["buttonContainer__buttonUploaded"]}
+                        >
+                          <label>
+                            <Svg
+                              className={classes["addFileSvg"]}
+                              name="fileUploaded"
+                            />
+                          </label>
+                        </Button>
+                      )}
                       <span className={classes["buttonContainer__text"]}>
                         DRV
                       </span>
@@ -304,8 +320,8 @@ const DerivativesView: React.FC<Props> = (
           ) : (
             <div className={classes["uploadFilesSpinnerContainer"]}>
               <CircularProgress
-                style={{ color: "#3E2F72", padding: 38 }}
-                size={140}
+                style={{ color: "#3E2F72", padding: 45 }}
+                size={180}
               />
             </div>
           )}
