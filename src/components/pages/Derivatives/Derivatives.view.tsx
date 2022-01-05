@@ -49,7 +49,7 @@ interface Props {
 }
 
 const DerivativesView: React.FC<Props> = (
-  props: React.PropsWithChildren<Props>
+  props: React.PropsWithChildren<Props>,
 ) => {
   const style = {
     position: "absolute" as "absolute",
@@ -217,22 +217,21 @@ const DerivativesView: React.FC<Props> = (
                           label="Floor Broker"
                           onChange={props.floorBrokersSelectChangeHandler}
                         >
-                          {/* {groupByCompany(props.floorBrokersDataState!).map(
+                          {groupByCompany(props.floorBrokersDataState!).map(
                             ([company, list]) => {
                               const subItems: IFloorBroker[] = list.map(
                                 (element: IFloorBroker) => (
                                   <MenuItem value={element.id}>
                                     {element.name}
                                   </MenuItem>
-                                )
+                                ),
                               );
                               return [
                                 <ListSubheader>{company}</ListSubheader>,
                                 ...subItems,
                               ];
-                            }
-                          )} */}
-                          <MenuItem value={1}>ff</MenuItem>
+                            },
+                          )}
                         </Select>
                       )}
                     </FormControl>
