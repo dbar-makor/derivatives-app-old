@@ -75,6 +75,8 @@ body {
 }
 
 .uploadFilesContainer {
+  margin-top: 15px;
+
   &__form {
     display: flex;
     justify-content: center;
@@ -115,9 +117,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 24px;
-    padding: 72px;
-    font-size: 2rem;
+    padding: 113px 0 113px 0;
+    font-size: 2.1rem;
     color: #e4461f;
   }
 
@@ -252,8 +253,9 @@ body {
 
   &__box {
     display: flex;
+    justify-content: space-between;
     padding: 18px;
-    margin-top: 24px;
+    margin-top: 15px;
     border: 1px solid #8a8a8a;
 
     &--text {
@@ -261,7 +263,7 @@ body {
       color: #3e2f71;
 
       &__svg {
-        margin-right: 6px;
+        margin-top: 5px;
       }
     }
 
@@ -270,9 +272,6 @@ body {
     }
 
     &--download {
-      position: absolute;
-      left: 750px;
-      bottom: 46px;
       height: 2.4vh;
       width: 2.4vh;
     }
@@ -283,8 +282,32 @@ body {
   color: #3e3f71;
 }
 
+.downloadUnresolvedButton {
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: #3e2f71;
+}
+
+.downloadUnresolvedButtonDisabled {
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  background: none;
+  color: #3e2f71;
+}
+
 .downloadButton {
   cursor: pointer;
+  border: none;
+  background: none;
+  font-weight: 700;
+  color: #3e2f71;
+}
+
+.disabledDownloadButton {
   border: none;
   background: none;
   font-weight: 700;

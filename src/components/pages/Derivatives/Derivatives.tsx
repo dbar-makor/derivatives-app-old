@@ -41,13 +41,16 @@ const Derivatives: React.FC<Props> = (
   const [spinnerState, setSpinnerState] = useState<boolean>(false);
   const [uploadErrorState, setUploadErrorState] = useState<boolean>(false);
   const [openModalState, setOpenModalState] = useState<boolean>(false);
+  const [disableFloorBrokersSelectState, setdisableFloorBrokersSelectState] =
+    useState<boolean>(true);
+
   const [floorBrokersDataState, setFloorBrokersDataState] = useState<
     IGetFloorBrokersResponse[] | undefined
   >([]);
   const [floorBrokerSelectState, setFloorBrokerSelectState] =
     useState<string>("");
-  const [disableFloorBrokersSelectState, setdisableFloorBrokersSelectState] =
-    useState<boolean>(true);
+  const [sourceFileNameState, setSourceFileNameState] = useState<string>("");
+  const [DRVFileNameState, setDRVFileNameState] = useState<string>("");
 
   const handleModalOpen = () => setOpenModalState(true);
   const handleModalClose = () => setOpenModalState(false);
@@ -59,6 +62,7 @@ const Derivatives: React.FC<Props> = (
     if (CSVFilesState.length === 2 && floorBrokerSelectState !== "") {
       onSubmit();
     }
+    // eslint-disable-next-line
   }, [CSVFilesState, floorBrokerSelectState]);
 
   useEffect(() => {
@@ -125,28 +129,6 @@ const Derivatives: React.FC<Props> = (
       });
   };
 
-  const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-
-    const id = event.target.id;
-    const fileReader = new FileReader();
-    const file = event.target.files![0];
-
-    if (id === "WEX") {
-      setWEXState(() => true);
-    }
-
-    if (id === "DRV") {
-      setDRVState(() => true);
-    }
-
-    fileReader.onload = () => {
-      setCSVFilesState([...CSVFilesState, { id, file: fileReader.result }]);
-    };
-
-    fileReader.readAsDataURL(file);
-  };
-
   const onSubmit = () => {
     setSpinnerState(() => true);
     setDerivativeState(() => undefined);
@@ -184,7 +166,33 @@ const Derivatives: React.FC<Props> = (
         setDRVState(() => false);
         setCSVFilesState(() => []);
         setFloorBrokerSelectState(() => "");
+        setSourceFileNameState(() => "");
+        setDRVFileNameState(() => "");
       });
+  };
+
+  const onUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    const id = event.target.id;
+    const fileReader = new FileReader();
+    const file = event.target.files![0];
+
+    if (id === "source") {
+      setSourceFileNameState(() => file.name);
+      setWEXState(() => true);
+    }
+
+    if (id === "DRV") {
+      setDRVFileNameState(() => file.name);
+      setDRVState(() => true);
+    }
+
+    fileReader.onload = () => {
+      setCSVFilesState([...CSVFilesState, { id, file: fileReader.result }]);
+    };
+
+    fileReader.readAsDataURL(file);
   };
 
   const onDownload = (fileName: string) => {
@@ -215,6 +223,8 @@ const Derivatives: React.FC<Props> = (
       derivativeState={derivativeState}
       WEXState={WEXState}
       DRVState={DRVState}
+      sourceFileNameState={sourceFileNameState}
+      DRVFileNameState={DRVFileNameState}
       spinnerState={spinnerState}
       uploadErrorState={uploadErrorState}
       openModalState={openModalState}

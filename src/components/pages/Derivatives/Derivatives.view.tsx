@@ -21,6 +21,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import ListSubheader from "@mui/material/ListSubheader";
 import LinearProgress from "@mui/material/LinearProgress";
+import Tooltip from "@mui/material/Tooltip";
 
 import { IDerivative, IFloorBroker } from "../../../models/derivatives";
 import { groupByCompany } from "../../../utils/derivatives";
@@ -44,8 +45,10 @@ interface Props {
   onDownload: (event: string) => void;
   readonly floorBrokersSelectChangeHandler: (event: SelectChangeEvent) => void;
   readonly floorBrokersDataState?: IFloorBroker[];
-  readonly disableFloorBrokersSelectState: boolean;
-  readonly floorBrokerSelectState: string;
+  readonly disableFloorBrokersSelectState?: boolean;
+  readonly floorBrokerSelectState?: string;
+  readonly sourceFileNameState?: string;
+  readonly DRVFileNameState?: string;
 }
 
 const DerivativesView: React.FC<Props> = (
@@ -57,7 +60,7 @@ const DerivativesView: React.FC<Props> = (
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 780,
-    height: 900,
+    height: 920,
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
@@ -95,7 +98,9 @@ const DerivativesView: React.FC<Props> = (
                 Username
               </TableCell>
               <TableCell className={classes["tableCellHeader"]}>Date</TableCell>
-              <TableCell className={classes["tableCellHeader"]}>WEX</TableCell>
+              <TableCell className={classes["tableCellHeader"]}>
+                SOURCE
+              </TableCell>
               <TableCell className={classes["tableCellHeader"]}>DRV</TableCell>
               <TableCell className={classes["tableCellHeader"]} align="center">
                 Matched
@@ -124,7 +129,7 @@ const DerivativesView: React.FC<Props> = (
                   <TableCell style={{ color: "#8a8a8a", fontWeight: 700 }}>
                     {row.date}
                   </TableCell>
-                  <TableCell className={classes["hi"]} align="left">
+                  <TableCell align="left">
                     <Svg className={classes["attachSvg"]} name="attach" />
                     <button
                       className={classes["downloadButton"]}
@@ -212,8 +217,7 @@ const DerivativesView: React.FC<Props> = (
                         <Select
                           labelId="floorBrolersSelectLabel"
                           id="floorBrolersSelect"
-                          defaultValue=""
-                          value={props.floorBrokerSelectState}
+                          value={props.floorBrokerSelectState ?? ""}
                           label="Floor Broker"
                           onChange={props.floorBrokersSelectChangeHandler}
                         >
@@ -253,7 +257,7 @@ const DerivativesView: React.FC<Props> = (
                               onChange={props.onUpload}
                               type="file"
                               accept=".csv"
-                              id="WEX"
+                              id="source"
                             />
                           </label>
                         </Button>
@@ -271,7 +275,9 @@ const DerivativesView: React.FC<Props> = (
                         </Button>
                       )}
                       <span className={classes["buttonContainer__text"]}>
-                        WEX
+                        {!props.sourceFileNameState
+                          ? "SOURCE"
+                          : props.sourceFileNameState.substring(0, 20)}
                       </span>
                     </div>
                     <div className={classes["buttonContainer"]}>
@@ -305,21 +311,35 @@ const DerivativesView: React.FC<Props> = (
                         </Button>
                       )}
                       <span className={classes["buttonContainer__text"]}>
-                        DRV
+                        {!props.DRVFileNameState ? (
+                          "DRV"
+                        ) : (
+                          <Tooltip
+                            title={<h2>{props.DRVFileNameState}</h2>}
+                            placement="bottom"
+                            arrow
+                          >
+                            <div>
+                              {props.DRVFileNameState.substring(
+                                props.DRVFileNameState.length - 20,
+                              )}
+                            </div>
+                          </Tooltip>
+                        )}
                       </span>
                     </div>
                   </form>
                 </React.Fragment>
               ) : (
                 <div className={classes["uploadFilesContainer__error"]}>
-                  Error uploading files - Please try again
+                  Uploading files failed, please try again
                 </div>
               )}
             </div>
           ) : (
             <div className={classes["uploadFilesSpinnerContainer"]}>
               <CircularProgress
-                style={{ color: "#3E2F72", padding: 45 }}
+                style={{ color: "#3E2F72", padding: 52 }}
                 size={180}
               />
             </div>
@@ -375,7 +395,7 @@ const DerivativesView: React.FC<Props> = (
                     className={
                       classes["derivativesTableContainer__text--matchedRows"]
                     }
-                    style={{ color: "#e59813" }}
+                    style={{ color: "#e4461f" }}
                   >
                     Unmatched Count
                   </div>
@@ -383,7 +403,7 @@ const DerivativesView: React.FC<Props> = (
                     className={
                       classes["derivativesTableContainer__text--matchedRows"]
                     }
-                    style={{ color: "#e59813" }}
+                    style={{ color: "#e4461f" }}
                   >
                     Unmatched Group Count
                   </div>
@@ -391,7 +411,7 @@ const DerivativesView: React.FC<Props> = (
                     className={
                       classes["derivativesTableContainer__text--matchedRows"]
                     }
-                    style={{ color: "#e59813" }}
+                    style={{ color: "#e4461f" }}
                   >
                     Unmatched Sum Charge
                   </div>
@@ -399,7 +419,7 @@ const DerivativesView: React.FC<Props> = (
                     className={
                       classes["derivativesTableContainer__text--matchedRows"]
                     }
-                    style={{ color: "#e59813" }}
+                    style={{ color: "#e4461f" }}
                   >
                     Unmatch Charge Percentage
                   </div>
@@ -447,7 +467,7 @@ const DerivativesView: React.FC<Props> = (
                     className={
                       classes["derivativesTableContainer__data--number"]
                     }
-                    style={{ color: "#e59813" }}
+                    style={{ color: "#e4461f" }}
                   >
                     {!props.derivativeState?.unmatchedCount
                       ? "0"
@@ -457,7 +477,7 @@ const DerivativesView: React.FC<Props> = (
                     className={
                       classes["derivativesTableContainer__data--number"]
                     }
-                    style={{ color: "#e59813" }}
+                    style={{ color: "#e4461f" }}
                   >
                     {!props.derivativeState?.unmatchedGroupCount
                       ? "0"
@@ -467,7 +487,7 @@ const DerivativesView: React.FC<Props> = (
                     className={
                       classes["derivativesTableContainer__data--number"]
                     }
-                    style={{ color: "#e59813" }}
+                    style={{ color: "#e4461f" }}
                   >
                     {!props.derivativeState?.unmatchedSumCharge
                       ? "0"
@@ -477,7 +497,7 @@ const DerivativesView: React.FC<Props> = (
                     className={
                       classes["derivativesTableContainer__data--number"]
                     }
-                    style={{ color: "#e59813" }}
+                    style={{ color: "#e4461f" }}
                   >
                     {!props.derivativeState?.unmatchedSumPercentage
                       ? "0"
@@ -546,13 +566,21 @@ const DerivativesView: React.FC<Props> = (
                     className={classes["downloadFileContainer__box--text__svg"]}
                     name="attach"
                   />
-                  <span style={{ fontWeight: 600 }}>unresolved.drv</span>
+                  <button
+                    className={classes["downloadUnresolvedButtonDisabled"]}
+                    disabled
+                  >
+                    <span>unresolved.drv</span>
+                  </button>
                 </span>
               ) : (
                 <div className={classes["downloadFileContainer__box--link"]}>
-                  <Svg name="attach" />
+                  <Svg
+                    className={classes["downloadFileContainer__box--text__svg"]}
+                    name="attach"
+                  />
                   <button
-                    className={classes["downloadButton"]}
+                    className={classes["downloadUnresolvedButton"]}
                     onClick={() =>
                       props.onDownload(props.derivativeState!.unresolved)
                     }
@@ -563,10 +591,12 @@ const DerivativesView: React.FC<Props> = (
               )}
 
               {!props.derivativeState?.unresolved ? (
-                <Svg
-                  className={classes["downloadFileContainer__box--download"]}
-                  name="download"
-                />
+                <button className={classes["disabledDownloadButton"]} disabled>
+                  <Svg
+                    className={classes["downloadFileContainer__box--download"]}
+                    name="download"
+                  />
+                </button>
               ) : (
                 <button
                   className={classes["downloadButton"]}

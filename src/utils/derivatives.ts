@@ -10,6 +10,6 @@ export const groupByCompany = (data: IFloorBroker[]) => {
         acc.set(key, [item]);
       }
       return acc;
-    }, new Map())
+    }, new Map()),
   );
 };
