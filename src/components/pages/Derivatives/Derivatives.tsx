@@ -24,7 +24,7 @@ interface Props {
 }
 
 const Derivatives: React.FC<Props> = (
-  props: React.PropsWithChildren<Props>,
+  props: React.PropsWithChildren<Props>
 ) => {
   const [derivativesState, setDerivativesState] = useState<
     IDerivative[] | undefined
@@ -73,7 +73,7 @@ const Derivatives: React.FC<Props> = (
   const getFloorBrokers = async () => {
     await backendAPIAxios
       .get(
-        `${process.env.REACT_APP_MAKOR_X_URL}${process.env.REACT_APP_MAKOR_X_API_KEY}`,
+        `${process.env.REACT_APP_MAKOR_X_URL}${process.env.REACT_APP_MAKOR_X_API_KEY}`
       )
       .then((response: AxiosResponse<IGetFloorBrokersResponse[]>) => {
         if (!response.data) {
@@ -141,7 +141,7 @@ const Derivatives: React.FC<Props> = (
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`,
           },
-        },
+        }
       )
       .then((response: AxiosResponse<IServerResponseData>) => {
         if (!response.data) {
