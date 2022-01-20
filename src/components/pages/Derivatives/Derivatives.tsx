@@ -12,7 +12,7 @@ import { IServerResponseData } from "../../../models/shared/response";
 import {
   IGetDerivativeResponse,
   IGetDerivativesResponse,
-  IGetFloorBrokersResponse,
+  IGetFloorBrokersResponse
 } from "../../../models/response";
 
 import icons from "../../../assets/icons";
@@ -95,8 +95,8 @@ const Derivatives: React.FC<Props> = (
     backendAPIAxios
       .get("/derivatives", {
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`,
-        },
+          Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`
+        }
       })
       .then((response: AxiosResponse<IGetDerivativesResponse>) => {
         if (!response.data.data) {
@@ -114,8 +114,8 @@ const Derivatives: React.FC<Props> = (
     backendAPIAxios
       .get("/derivatives/single", {
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`,
-        },
+          Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`
+        }
       })
       .then((response: AxiosResponse<IGetDerivativeResponse>) => {
         if (!response.data.data) {
@@ -139,22 +139,18 @@ const Derivatives: React.FC<Props> = (
         { files: CSVFilesState, floorBrokerId: floorBrokerSelectState },
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`,
-          },
+            Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`
+          }
         }
       )
       .then((response: AxiosResponse<IServerResponseData>) => {
-        if (!response.data) {
-          return console.log("Failed to upload CSV");
-        }
-
         if (response.status === 200) {
           getDerivatives();
           getDerivative();
         }
       })
       .catch((e: AxiosError) => {
-        console.log(`Failed to upload CSV with error: ${e}`);
+        console.log(`Failed to upload CSV with ${e}`);
         setUploadErrorState(() => true);
         setTimeout(() => {
           setUploadErrorState(() => false);
@@ -197,13 +193,13 @@ const Derivatives: React.FC<Props> = (
 
   const onDownload = (fileName: string) => {
     backendAPIAxios
-      .get("/derivatives/download/" + fileName, {
+      .get<Blob>("/derivatives/download/" + fileName, {
         responseType: "blob",
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`,
-        },
+          Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`
+        }
       })
-      .then((response: AxiosResponse) => {
+      .then((response: AxiosResponse<Blob>) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
         link.href = url;
