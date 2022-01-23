@@ -72,7 +72,7 @@ const Derivatives: React.FC<Props> = (
 
   const getFloorBrokers = async () => {
     await backendAPIAxios
-      .get(
+      .get<IGetFloorBrokersResponse[]>(
         `${process.env.REACT_APP_MAKOR_X_URL}${process.env.REACT_APP_MAKOR_X_API_KEY}`
       )
       .then((response: AxiosResponse<IGetFloorBrokersResponse[]>) => {
@@ -93,7 +93,7 @@ const Derivatives: React.FC<Props> = (
 
   const getDerivatives = () => {
     backendAPIAxios
-      .get("/derivatives", {
+      .get<IGetDerivativesResponse>("/derivatives", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`
         }
@@ -112,7 +112,7 @@ const Derivatives: React.FC<Props> = (
 
   const getDerivative = () => {
     backendAPIAxios
-      .get("/derivatives/single", {
+      .get<IGetDerivativeResponse>("/derivatives/single", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token") ?? ""}`
         }
@@ -134,7 +134,7 @@ const Derivatives: React.FC<Props> = (
     setDerivativeState(() => undefined);
 
     backendAPIAxios
-      .post(
+      .post<IServerResponseData>(
         "/derivatives",
         { files: CSVFilesState, floorBrokerId: floorBrokerSelectState },
         {
@@ -144,14 +144,20 @@ const Derivatives: React.FC<Props> = (
         }
       )
       .then((response: AxiosResponse<IServerResponseData>) => {
+        if (!response.data) {
+          return alert("Failed to upload CSV");
+        }
+
         if (response.status === 200) {
           getDerivatives();
           getDerivative();
         }
       })
       .catch((e: AxiosError) => {
-        console.log(`Failed to upload CSV with ${e}`);
+        alert(`Failed to upload CSV with ${e}`);
+
         setUploadErrorState(() => true);
+
         setTimeout(() => {
           setUploadErrorState(() => false);
         }, 2000);

@@ -31,9 +31,9 @@ const Login: React.FC<Props> = (props: React.PropsWithChildren<Props>) => {
     e.preventDefault();
 
     backendAPIAxios
-      .post("/auth/login", {
+      .post<ILoginResponse>("/auth/login", {
         username: usernameState,
-        password: passwordState,
+        password: passwordState
       })
       .then((response: AxiosResponse<ILoginResponse>) => {
         sessionStorage.setItem("token", response.data.data!.token);
